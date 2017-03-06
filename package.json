@@ -3,18 +3,10 @@
   "version": "0.0.1",
   "description": "Pupil-Labs-docs",
   "main": "index.html",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pupil-labs/pupil-docs.git"
   },
-  "keywords": [
-    "pupil",
-    "labs",
-    "docs"
-  ],
   "author": "Pupil-Labs",
   "license": "MIT",
   "bugs": {
@@ -27,7 +19,6 @@
     "gulp-clean-css": "^2.3.2",
     "gulp-concat": "^2.6.1",
     "gulp-plumber": "^1.1.0",
-    "gulp-sharp-minimal": "git+https://github.com/pupil-labs/gulp-sharp-minimal.git",
     "run-sequence": "^1.2.2"
   }
 }
