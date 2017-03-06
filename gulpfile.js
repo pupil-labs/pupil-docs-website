@@ -8,7 +8,6 @@ var fs = require('fs');
 // plugins - site
 var prefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
-var image_min = require('gulp-sharp-minimal');
 var cleancss = require('gulp-clean-css');
 var concat = require('gulp-concat');
 var runSeq = require('run-sequence');
