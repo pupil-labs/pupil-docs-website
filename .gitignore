@@ -27,3 +27,6 @@ node_modules
 # ignore our minified css files
 screen.min.css
 main.min.css
+
+# ignore build directories
+public
