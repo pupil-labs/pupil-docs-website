@@ -1,0 +1,25 @@
+languageCode = "en-us"
+title = "Pupil Docs"
+baseurl = "http://example.org/"
+
+# config
+config = "config.toml"
+
+# default language
+defaultContentLanguag = "en"
+
+# Code higlighting settings
+pygmentsCodefences = true
+pygmentsCodeFencesGuesSsyntax = false
+pygmentsOptions = ""
+pygmentsStyle = "monokai"
+pygmentsUseClasses = true
+
+# Params
+[params]
+search = true
+
+# [[params.language_tabs]]
+#	key = "python"
+#	name = "Python"
+

@@ -1,0 +1,25 @@
+branches:
+  only:
+    - master
+os:
+  - linux
+sudo: false
+language: go
+go:
+- '1.8'
+addons:
+  ssh_known_hosts: "$DEPLOY_DOMAIN"
+before_install:
+  - openssl aes-256-cbc -K $encrypted_8e61a18b00c8_key -iv $encrypted_8e61a18b00c8_iv -in docs_deploy_rsa.enc -out /tmp/docs_deploy_rsa -d
+install:
+  - go get -v github.com/spf13/hugo
+script:
+  - "./scripts/tag.sh"
+  - hugo --config config-tags.toml
+  - hugo
+after_success:
+  - "./scripts/after_success.sh"
+env:
+  global:
+  - secure: slfuxB0EKoyq29bXZWWRR2hvTW1TcX6DMwjb16igE1eeqqdgfwaetuZY3dlvy2+shpKTSF/jC3WbR7hJVEJj6lHSLchDXdHuMQYD0wSlcvr7DctbJjZuPK7fJ5+8P5IxhvjQ2/NTQluQOKxO8pL1dQmDW3NMKmqgjq37QE853jh+vT1mUn0H5oIa4JT7y+bcQ0gCWjfbW11Jjh2bk7iIaa8y+uDTyL8bmQqt02XCxOu2Zong01rPurJJuR2in6WUfbY4uZUcLZSvIljORyN1QLvXAY7O8JgMMS1Lwltnzy/94Fny+zxPNc++b8UCFJT4MMbtb8Gu/lkPEKfc5Tlvq6h3LpDGTjcHfgz2cJsqzFP7xYbvkaphgm5nPi6+ZM/VEiZpLaUCR82yunXboc7gEFuj4+uJooSiDyZ94jb63k/qWn2LbqMGYCL/SFdSlSdOxxea/LpgkX6fXC3QoblqGgI+jf2ANARLqbt4t8Blvgqysc5wJbLsfOyq15x877J13cB77uXXpCpAj3uxSCHIOgc0eFf+NsfQXKRpBnDgzWA4UUOqlUuFMK1Vx5d56F7jSspFtswLJo1sYCVd6PJhpGqOslyBzBHvgc9QOHZoIjw9PaePU6lJQB4PSawp1pps92JJ0rY7Th3yg2pa6A58hJ9P6De11kC7v67PdnkXk24=
+  - secure: G3UUs/nwFSktfGguRG9S9Kb2v5TbrSacbsO+TwkRSkB2uBV81xx4a3/cFCPzu/gpLz4jG1SWhtmntX7PLjn+bN5woIh6ApfEi7TyLOc/EsgENFWaFfqnFSqBqHwCTZGAF7uXuRw+9/iJ/y4PlkX6EQzmcF9ByMKPaB8UZV4sIVsQUV2JVC6NpIkcjJ6xkEIaz7BiSwmasRGNVWU09daayge/2gh9qIA5/PdhcJnVuBlRKKwGmRkQpVewCeAhRP1zIDhqf6Ft1R36R/N7/HdDBRSFyVTVLO42xv+lBDKg0cFaioLSg5NC6bmYTpKMC2aIXtauSbDUBDMvqI8n7hVZt56QjX5xP9SI25F/CzzwSoNl35/8VEOAcRuyxPSdkDvlYc8jM13hdEUk/X3BrsJzu+SQKFctHSRPJNlBfoWLwsAPpP2LLpWENAlZB80q///cAmi8BFx3sIOVNwfsKAEo6wor/eWnQQXdLFKnuqWrzDTwZxblwk33Dm0xbNbhr11ND7k4B56P4QdnAGIp5TZO9eNvYrQMe9enGHrh+RTNONIkcimusDafSrSG4BA+guM1sqHnflOegHvk0i4qczrat0Ms+vMB/sOEJ+RYoOejCjjlEkGa3EB0Gqnqp13gCXeqyOQKlAmUkle/gQPeKcWD1MQPOr6M3EJSuuUkTDSzAJQ=
