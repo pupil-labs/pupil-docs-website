@@ -1,27 +1,27 @@
 branches:
   only:
-  - master
+    - master
 os:
-- linux
+  - linux
 sudo: false
 language: go
 go:
-- '1.8'
+  - '1.8'
 addons:
   ssh_known_hosts: "$DEPLOY_DOMAIN"
 before_install:
-- echo -e "Host ${DEPLOY_DOMAIN}\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-- openssl aes-256-cbc -K $encrypted_8e61a18b00c8_key -iv $encrypted_8e61a18b00c8_iv
-  -in docs_deploy_rsa.enc -out /tmp/docs_deploy_rsa -d
+  - echo -e "Host ${DEPLOY_DOMAIN}\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - openssl aes-256-cbc -K $encrypted_8e61a18b00c8_key -iv $encrypted_8e61a18b00c8_iv
+    -in docs_deploy_rsa.enc -out /tmp/docs_deploy_rsa -d
 install:
-- go get -v github.com/spf13/hugo
+  - go get -v github.com/spf13/hugo
 script:
-- "./scripts/tag.sh"
-- hugo --config config-tags.toml
-- hugo
+  - "./scripts/tag.sh"
+  - hugo --config config-tags.toml
+  - hugo
 after_success:
-- "./scripts/after_success.sh"
+  - "./scripts/after_success.sh"
 env:
   global:
-  - secure: ZkSH1xdscVHtt6fY65pqZPb1fmAgzRDhEKJVlP94sq7RS2RIC8GAmlHJ7VqOBjU/bU/6i+4GaRX0Y62Fa6o+QyqRwO2rBPOYDQwql6frFUZdDqDSZeTiqu97D3kxgnWkIoMBweUKCX5JEUiEBIMLkw38Ro8n72//HIit3u4vCPOsUZhZGMgElIArEtqEMWX1IwA8xtcxFZczq9Xa3TLXNCEw0RnjjS2kRbChmYjbLVHbF47hQviWVbQIX8iJJ5seCo8n3YW9jRfx/sdhDj6//bxpn57uSb4lAp3v9MBlzbMopUWhWFtOTuJSyCvLMrAEOghDkYlOp/ldQLUV84v4M7n0Rjwtc2SZjKP9HEbzzW07hSxpbf1Mq5F2I9hSVH7gt0RDlxgU+9LbDCC5YGT/pMqEeWHo62UW1nQ1hSFuLWayDVXnVv5Hy+5g+oGQSYhcG8QwE7JPuPFXaXMbe2umdmIp34E/hCAdML5WoPgtkjMz6ay8aShM1cskdTOvxJzDB0/y86BA/bkqgaXOC/WZDeQi7Zg5zIDo5aL+yK4NvCkm38hjf0Y8z8uW5iGZCh5xhA6sFbmsko5W0EfU78oRaoaIyFy0WEaH+wHpKeFlUjMWkao3znYX8X5FihDRFO3Tr0kyLRwbolswltRee5qseOsakceaspJjtD5lpAq219A=
-  - secure: SSgNxLaOL81kqUEruCE+5XOIZ9tg3C/tLQfWVKxu/Fn8ITkJJRMjuVR2y3QhonIIUMPcxR8jcydbouzyoubLvnE0vaSefJFll/cznUy/zzq6B43sZnW1SIUiEq3UdQ/V9gwN0eLI864LmhKlA85soYgrkj4fF7ZwPuOU31zuAAx2viYya0hMwzCpjOdbPHdCf0ISAcUrnWCAGo6hJCfudltYBbwtiqbuOxEx5/714fLvBZYNskPrTPA9hAz2fqpJTOXNoyRtdBxfpqr6OMcPGL+5Xw/S1sphGgWz9aP0YYOx3WIIFxeZxE089nvSq6j66JhXnaaQn7k3yDt7OsstlulNr9M7qbVWBzKaQ+4dAJh0hxtMwgBSWKQ7HWdpf7YtDSVR/DOLUyVr+lD8mYMX6aeMYI73P7c5u8UXUw6MvntApeTryVX3LZ2e6GijKWuz1eyFoZsnEIY2xkT435EVqyV6Ub7PzRrHdSlZ6gI3zFjmQPLT8uDaiILqu0xjKCo3E+6cHhHDpvynBgI5qXPmfPqTDoPOiINEOFoEwH0J20qge8UDFW70tLcBP5RfRJFp6XmoPkfmNJ5LObNEr7UZvTDrGdINnczInkZ+/2fWuSEk11x35huSTWQQqePsieGOFjKLM/i/kirCLgk2MEfETWofZ8BQ9TmcWBkLkh+OTn4=
+    - secure: fW/nf4g4pD8NXES+HLBLRDc2A44F1WB3gowUSkAG+OSqaykxNlELlfC0C6tMga2Ko82WAFjOgu3Pznd35ngdxcsP0SmfguNEvP2EPUSuq2Fi4GwaeGTC7/YZPJ+sQgrgnrKJZQcVMmu9ITlpQrnV3B7WOm1ennQ2QVt3GiVjMTqeUfLvkACNc6xS8kj5Z27vNQrjkVfuxF/RsQmncC7/FL7bnFwdumvSgbJvTCJmpM9IF6ODYZYeFut+N9BLuO60dlueRrViJ8syKldmRKO8juOQx97/QgDNFYmUi/Hz2DuEoWwLO2rskrB6oYOuozTD2I1SA9tHQfkFwTVHENahzWgusMnr9AiG3L+/dJascZVSV6/z8gFahHXA+j35jhivm3pPE6Bavr7fDFqV3NC8d02VtKy/TsLs7k/L/lm8ukws9Hqfq7LHR+EDcJ3rOBMsQvblEV7PYmnD6IMP3Xf9w10DrvliWcEZ4nZ2Wq3Qvc5rFl7ZkoY0SxGHl9w7Z33TfzI03xsigBYFMfaAUblAOKN53i15opNpdLVPVUtjih6BzVoRNBqk55S1/kfbmG3tTaKhWIFu4BMqIbmNHoZc8cGiBE+W/uAGPPsUKhU6qGRfuDX24OS5Fe+RZmdE+wJTIm22C3rCAqve4myC28A4lUtxfg60vwWFwMheJDgRk9g=
+    - secure: G9VXvy5Elt+CCIehEUdtLQILc5nfR1+LG0WDjjxF13gQ+AVb1uMVUF9r3cQaJU7+6h8Tq8XPR8egRoEg3NDvHjiOXm30nx2xlPGUvGP0Ctq5IPvsGv0RyzJWjG/Fbyn9SBJEL5Fu0QMPdAbxHZa+JM5K6C/1HDR4U3YtmMWs4qparshP4sgVuImSMWxq6bJlOypoxO24Xo+Z/gJoXSrFLjSobCaoENfQFfMWB9tQ5ChMFFkY+Wjgcv/GfHgKy28VtdCYuwboAYbHU7Wp6WAfGPt76rHTcQut2wvp54CFxoORlIK2ICGmkJNjDHwMgXA036bKwuTyAFfYg8X12Ugq8g7Z996eERzncH9OVjIlrKPHkelXRKsB5Ad8xiMIoz876mGMBU9LZJYDtskSBPk2lAAckjZoTlQcLW9NarohoVn2eJ7NX9O6sNgCEsnbZDkCa+JmL3lj5BNgQ6Tv8PrscMcOhAZG9K+usdu6CuGBVpmXMr3JCRzIVb+qUx/b2QcEF19g+jZCW98MLvHmwvvAOConbk/ERPruxTuWKNm+UYlb1TX6MNnjiErenx7akM+34/qQdqA2vo3Dxmq/C7kymKOsTir95UmLxPR69wd1UtLuj82Xr1u2fCs70Gi4phmthrmuUSpv1ZM097d+6DiRL7hFn1VhpqTva5cMFkQ1/MU=
