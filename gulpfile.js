@@ -17,7 +17,7 @@ var runSeq = require('run-sequence');
 // css build task(
 // =================================================================                      )
 
-gulp.task("css:build", function() {
+gulp.task("css:main", function() {
   return gulp.src("./assets/css/main.css")
         .pipe(cleancss())
         .pipe(prefixer({
@@ -29,7 +29,7 @@ gulp.task("css:build", function() {
         .pipe(gulp.dest("./static/stylesheets"))
       });
 
-gulp.task("screen:build", function() {
+gulp.task("css:screen", function() {
   gulp.src("./assets/css/screen.css")
       .pipe(cleancss())
       .pipe(prefixer({
@@ -42,8 +42,8 @@ gulp.task("screen:build", function() {
       });
 
 gulp.task('css:all', function() {
-  return runSeq(['css:build','screen:build'])
-      });
+  return runSeq(['css:main','css:screen'])
+  });
 
 // =================================================================                      
 // image min task(
