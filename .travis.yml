@@ -10,21 +10,19 @@ go:
 addons:
   ssh_known_hosts: "$DEPLOY_DOMAIN"
 before_install:
-  - git submodule foreach git pull origin master
+  - "/bin/bash ./scripts/before_install.sh"
+  - git submodule foreach git pull origin master  
   - nvm install 6.0.0
   - npm install
   - gulp css:all  
-  - echo -e "Host ${DEPLOY_DOMAIN}\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - openssl aes-256-cbc -K $encrypted_8e61a18b00c8_key -iv $encrypted_8e61a18b00c8_iv
-    -in docs_deploy_rsa.enc -out /tmp/docs_deploy_rsa -d
 install:
   - go get -v github.com/spf13/hugo
 script:
-  - "./scripts/tag.sh"
+  - "/bin/bash ./scripts/tag.sh"
   - hugo --config config-tags.toml
   - hugo
 after_success:
-  - "./scripts/after_success.sh"
+  - "/bin/bash ./scripts/after_success.sh"
 env:
   global:
     - secure: fW/nf4g4pD8NXES+HLBLRDc2A44F1WB3gowUSkAG+OSqaykxNlELlfC0C6tMga2Ko82WAFjOgu3Pznd35ngdxcsP0SmfguNEvP2EPUSuq2Fi4GwaeGTC7/YZPJ+sQgrgnrKJZQcVMmu9ITlpQrnV3B7WOm1ennQ2QVt3GiVjMTqeUfLvkACNc6xS8kj5Z27vNQrjkVfuxF/RsQmncC7/FL7bnFwdumvSgbJvTCJmpM9IF6ODYZYeFut+N9BLuO60dlueRrViJ8syKldmRKO8juOQx97/QgDNFYmUi/Hz2DuEoWwLO2rskrB6oYOuozTD2I1SA9tHQfkFwTVHENahzWgusMnr9AiG3L+/dJascZVSV6/z8gFahHXA+j35jhivm3pPE6Bavr7fDFqV3NC8d02VtKy/TsLs7k/L/lm8ukws9Hqfq7LHR+EDcJ3rOBMsQvblEV7PYmnD6IMP3Xf9w10DrvliWcEZ4nZ2Wq3Qvc5rFl7ZkoY0SxGHl9w7Z33TfzI03xsigBYFMfaAUblAOKN53i15opNpdLVPVUtjih6BzVoRNBqk55S1/kfbmG3tTaKhWIFu4BMqIbmNHoZc8cGiBE+W/uAGPPsUKhU6qGRfuDX24OS5Fe+RZmdE+wJTIm22C3rCAqve4myC28A4lUtxfg60vwWFwMheJDgRk9g=
