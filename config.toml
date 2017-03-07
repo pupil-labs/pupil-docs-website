@@ -12,13 +12,4 @@ pygmentsOptions = ""
 pygmentsStyle = "monokai"
 pygmentsUseClasses = true
 
-ignoreFiles = ['README.md']
-
-# Params
-[params]
-search = true
-
-# [[params.language_tabs]]
-#	key = "python"
-#	name = "Python"
-
+ignoreFiles = ["README.*"]
