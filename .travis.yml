@@ -19,8 +19,7 @@ install:
   - go get -v github.com/spf13/hugo
 script:
   - "/bin/bash ./scripts/tag.sh"
-  - hugo --config config-tags.toml
-  - hugo
+  - hugo --config="config-tags.toml"
 after_success:
   - "/bin/bash ./scripts/after_success.sh"
 env:

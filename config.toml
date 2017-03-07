@@ -5,9 +5,6 @@ baseurl = "http://example.org/"
 # config
 config = "config.toml"
 
-# default language
-defaultContentLanguage = "en"
-
 # Code higlighting settings
 pygmentsCodefences = true
 pygmentsCodeFencesGuesSsyntax = false
