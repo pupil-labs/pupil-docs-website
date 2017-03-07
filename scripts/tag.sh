@@ -138,7 +138,7 @@ main () {
               extension="${eachFile##*.}"
               what="${filename}\.${extension}"
               withwhat="${filename}\.${stripTag}\.${extension}"
-              sed -i -e "s/${what}/${withwhat}/g" "${eachMd}"
+              perl -pi -e "s/${what}/${withwhat}/g" "${eachMd}"
             done <<< "${files}"
         done
       body+="[Languages.${stripTag}]\nweight = ${tagsCount}\n"
