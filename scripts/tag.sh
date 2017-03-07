@@ -12,6 +12,7 @@
 ################################################################################
 variables_func() {
   BRANCHES="master"
+  EXCLUDE="logo.png|navbar.png"
   OUTFILE="config-tags.toml"
   PATTERN=".md|.jpg|.jpeg|.png|.pdf"
   SOURCE="config.toml"
@@ -27,10 +28,11 @@ variables_func() {
 #   None
 ################################################################################
 options_func() {
-  while getopts "b:ho:p:s:t:w:" OPTION
+  while getopts "b:e:ho:p:s:t:w:" OPTION
   do
     case "${OPTION}" in
       b) BRANCHES="${OPTARG}" ;;
+      e) EXCLUDE="${OPTARG}" ;;
       o) OUTFILE="${OPTARG}" ;; 
       p) PATTERN="${OPTARG}" ;;
       s) SOURCE="${OPTARG}" ;;
@@ -55,13 +57,14 @@ options_func() {
 #   None
 ################################################################################
 usage_func() {
-  echo "Usage: $0 [-b BRANCHES] [-o FILE] [-p PATTERN] [-s FILE] [-t NUMBER]
-                  [-w DIR]
+  echo "Usage: $0 [-b BRANCHES] [-e PATTERN] [-o FILE] [-p PATTERN] [-s FILE]
+                  [-t NUMBER] [-w DIR]
 
   -h               Print this help
   -b BRANCHES      Set branches to include.
                    Separtor is space.               Default: master
 
+  -e PATTERN       Exclude following files.         Default: logo.png|navbar.png
   -o FILE          Set output file.                 Default: ./config-tags.toml
   -p PATTERN       Set grep pattern for file match. Default: 
                                                       .md|.jpg|.jpeg|.png|.pdf
@@ -118,7 +121,7 @@ main () {
       git checkout -f "${tag}" 2>/dev/null || 
         err "Tag or Branch ${tag} doesn't exist."
       files=$(git ls-tree --name-only --full-tree -r ${tag} | 
-            egrep "${PATTERN}")
+            egrep "${PATTERN}" | egrep -v "${EXCLUDE}")
       while read line
         do
           filename="${line%.*}"
@@ -126,6 +129,18 @@ main () {
           mv -f "${line}" "${filename}.${stripTag}.${extension}" ||
             err "Cannot move file ${line}"
         done <<< "${files}"
+      for eachMd in $(find ./ -name "*${stripTag}.md")
+        do
+          while read eachFile
+            do
+              relPath=${eachFile%.*} 
+              filename="${relPath##*/}"
+              extension="${eachFile##*.}"
+              what="${filename}\.${extension}"
+              withwhat="${filename}\.${stripTag}\.${extension}"
+              sed -i -e "s/${what}/${withwhat}/g" "${eachMd}"
+            done <<< "${files}"
+        done
       body+="[Languages.${stripTag}]\nweight = ${tagsCount}\n"
       body+="title = \"${stripTag}\"\n\n"
       tagsCount=$((tagsCount-1))
