@@ -6,7 +6,7 @@ baseurl = "http://example.org/"
 config = "config.toml"
 
 # default language
-defaultContentLanguag = "en"
+defaultContentLanguage = "en"
 
 # Code higlighting settings
 pygmentsCodefences = true
@@ -14,6 +14,8 @@ pygmentsCodeFencesGuesSsyntax = false
 pygmentsOptions = ""
 pygmentsStyle = "monokai"
 pygmentsUseClasses = true
+
+ignoreFiles = ['README.md']
 
 # Params
 [params]
