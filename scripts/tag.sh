@@ -142,9 +142,10 @@ main () {
             done <<< "${files}"
         done
       body+="[Languages.${stripTag}]\nweight = ${tagsCount}\n"
-      body+="title = \"${stripTag}\"\n\n"
+      body+="title = \"Pupil Docs - ${tag}\"\n\n"
       tagsCount=$((tagsCount-1))
     done
+    body+="[params]\nsearch = true\n"
   echo -e "${body}" > "${OUTFILE}" || err "Cannot write to ${OUTFILE}"
 } # main() 
 
