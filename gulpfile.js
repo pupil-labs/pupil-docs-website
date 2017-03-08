@@ -25,7 +25,7 @@ gulp.task("css:main", function() {
             remove: true // remove un-needed prefixes
         }))
         .pipe(concat('main.min.css'))
-        .pipe(gulp.dest("./static/stylesheets"))
+        .pipe(gulp.dest("./themes/docuapi/static/slate/stylesheets"))
       });
 
 gulp.task("css:screen", function() {
@@ -37,7 +37,7 @@ gulp.task("css:screen", function() {
           remove: true // remove un-needed prefixes
         }))
       .pipe(concat('screen.min.css')) 
-      .pipe(gulp.dest("./static/stylesheets"))
+      .pipe(gulp.dest("./themes/docuapi/static/slate/stylesheets"))
       });
 
 gulp.task('css:all', function() {
