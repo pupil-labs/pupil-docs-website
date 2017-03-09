@@ -30,3 +30,6 @@ main.min.css
 
 # ignore build directories
 public
+
+# ignore dynamically created config file
+config-tags.toml
