@@ -30,3 +30,4 @@ main.min.css
 
 # ignore build directories
 public
+config-tags.toml
