@@ -1,6 +1,6 @@
 [submodule "content"]
 	path = content
-	url = git@github.com:pupil-labs/pupil-docs.git
+	url = https://github.com/pupil-labs/pupil-docs.git
 [submodule "themes/docuapi"]
 	path = themes/docuapi
-	url = git@github.com:pupil-labs/docuapi.git
+	url = https://github.com/pupil-labs/docuapi.git
