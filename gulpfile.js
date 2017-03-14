@@ -1,26 +1,27 @@
 // load all required libraries
-var gulp = require('gulp');
-var gutil = require('gulp-util');
+const gulp = require('gulp');
+const gutil = require('gulp-util');
 
 // node filesystem 
-var fs = require('fs');
+const fs = require('fs');
 
 // plugins - site
-var sass = require('gulp-sass');
-var prefixer = require('gulp-autoprefixer');
-var plumber = require('gulp-plumber');
-var cleancss = require('gulp-clean-css');
-var concat = require('gulp-concat');
-var runSeq = require('run-sequence');
-var babel = require('gulp-babel');
-var uglify = require('gulp-uglify');
-var minify = require('gulp-minify');
+const sass = require('gulp-sass');
+const prefixer = require('gulp-autoprefixer');
+const plumber = require('gulp-plumber');
+const cleancss = require('gulp-clean-css');
+const concat = require('gulp-concat');
+const runSeq = require('run-sequence');
+const babel = require('gulp-babel');
+const uglify = require('gulp-uglify');
+const minify = require('gulp-minify');
+const shell = require('gulp-shell');
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
-// =================================================================                      
+// =================================================================
 // css build tasks
-// =================================================================                      )
+// =================================================================
 
 gulp.task("css:build:screen", function() {
   return gulp.src(SLATE_PATH+"stylesheets/screen.css.scss")
@@ -50,14 +51,14 @@ gulp.task("css:build:print", function() {
 });
 
 
-gulp.task('css:build:all', function() {
-  return runSeq(['css:build:screen','css:build:print'])
+gulp.task('css:build', ['css:build:screen', 'css:build:print'], function() {
+  return;
 });
 
 
-// =================================================================                      
+// =================================================================
 // js build tasks
-// =================================================================                      )
+// =================================================================
 
 gulp.task("js:build:all", function(){
   return gulp.src([SLATE_PATH+"javascripts/lib/_energize.js",
@@ -73,7 +74,7 @@ gulp.task("js:build:all", function(){
           .pipe(concat('all.min.js'))
           .pipe(uglify())
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
-})
+});
 
 
 gulp.task("js:build:all_nosearch", function(){
@@ -87,16 +88,41 @@ gulp.task("js:build:all_nosearch", function(){
           .pipe(concat('all_nosearch.min.js'))
           .pipe(uglify())
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
-})
+});
 
-gulp.task('js:build', function() {
-  return runSeq(['js:build:all','js:build:all_nosearch'])
+gulp.task('js:build', ['js:build:all','js:build:all_nosearch'], function() {
+  return;
 });
 
 
-// =================================================================                      
+// =================================================================
+// hugo tasks
+// =================================================================
+
+gulp.task('hugo:serve', shell.task([
+  'hugo server -D'])
+);
+
+gulp.task('hugo:build', shell.task([
+  'hugo server -D'])
+);
+
+// =================================================================
+// dev tasks
+// =================================================================
+
+gulp.task('default', function() {
+  return runSeq(['css:build','js:build'],'hugo:serve');
+});
+
+
+gulp.task('deploy', ['css:build','js:build'], function() {
+  return;
+});
+
+// =================================================================
 // image min tasks - not using currently
-// =================================================================                      )
+// =================================================================
 
 gulp.task('image_min', function() {
   options = {
