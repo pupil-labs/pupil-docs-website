@@ -13,7 +13,7 @@ before_install:
   - "/bin/bash ./scripts/before_install.sh"
   - git submodule foreach git pull origin master  
   - nvm install 6.0.0
-  # - pip install pygments  
+  - sudo apt-get install python-pygments
   - npm install
   - gulp deploy
 install:
