@@ -1,6 +1,6 @@
 # pupil-docs-website
 
-pupil docs static site generator
+Pupil docs static site generator. 
 
 ## Dependencies & Setup
 
@@ -15,7 +15,7 @@ Clone the repo and submodules:
 
 `git clone --recursive https://github.com/pupil-labs/pupil-docs-website.git`
 
-## Preview site on local server
+## Preview
 
 Build and serve only published content
 
@@ -36,8 +36,30 @@ hugo server -p 3030
 
 See server options in hugo docs [here](https://gohugo.io/commands/hugo_server/).
 
-## Content
+## Project structure
 
-All text and image content are stored in the `content` directory. `content` is a submodule with repo at [pupil-docs](https://github.com/pupil-labs/pupil-docs). 
+This project depends on 3 submodules:
 
-All content is written in markdown.
+  - [content](https://github.com/pupil-labs/pupil-docs) - contains all text and images used in documentation. It is versioned independently from the site generator and all styles. Versions of content are synchronized with versions of [Pupil](https://github.com/pupil-labs/pupil). 
+  - [docuapi](https://github.com/pupil-labs/docuapi) - a Hugo theme for slate with some nice custom tools. We forked the repo in order to make change to layouts and styles. 
+  	- [slate](https://github.com/pupil-labs/slate) - a fork of Slate with only `js`, styles, and fonts stored for development. Javascript is minified and bundled with `docuapi`'s custom GO bundler or with `gulp` task.  
+
+Diagram of the submodule hierarchy.
+
+```
+/pupil-docs-website
+|-- content
+|-- themes
+|	`-- docuapi
+|		`--static
+|			`--slate
+```
+
+## Deployment
+
+Deployment with TravisCI. See `.travis.yml` and `/scripts` directory. 
+
+
+## Notes
+
+Setup `$GOPATH` on [Arch Linux](https://wiki.archlinux.org/index.php/Go#.24GOPATH)
