@@ -3,7 +3,7 @@ branches:
     - master
 os:
   - linux
-sudo: false
+sudo: true
 language: go
 go:
   - '1.8'
