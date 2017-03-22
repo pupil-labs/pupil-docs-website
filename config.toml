@@ -1,6 +1,6 @@
 languageCode = "en-us"
 title = "Pupil Docs"
-baseurl = "http://example.org/"
+baseurl = "http://docs.pupil-labs.com"
 theme = "docuapi"
 
 # config
