@@ -21,7 +21,7 @@ install:
 script:
   - "/bin/bash ./scripts/tag.sh"
   - cat config-tags.toml
-  - hugo --config="config-tags.toml"
+  - hugo --config="config-tags.toml" --verbose
 after_success:
   - "/bin/bash ./scripts/after_success.sh"
 env:
