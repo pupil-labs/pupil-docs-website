@@ -16,6 +16,10 @@ const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const minify = require('gulp-minify');
 const shell = require('gulp-shell');
+const rename = require('gulp-rename')
+const size = require('gulp-size')
+const imagemin = require('gulp-imagemin')
+const img_resize = require('gulp-image-resize')
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -126,18 +130,24 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 // image min tasks - not using currently
 // =================================================================
 
-gulp.task('image_min', function() {
-  options = {
-    resize: [1440,1440],
-    quality: 85,
-    progressive: true,
-    compressionLevel: 6,
-    sequentialRead: true,
-    trellisQuantisation: false
-  }
+var imgInput = './content/images/**/*.{jpg,png}';
+var imgOutput = './content/images/';
 
-  return gulp.src('build/media/images/**/*.{jpg,png}',{base: './'})
+gulp.task('image_min', function() {
+  return gulp.src(imgInput)
     .pipe(plumber())
-    .pipe(image_min(options))
-    .pipe(gulp.dest('./'))
+    .pipe(size())
+    .pipe(imagemin())
+    .pipe(rename({
+      suffix: "-preview"
+    }))
+    .pipe(img_resize({
+      width : 50,
+      height : 40,
+      crop : false,
+      upscale : false
+    }))
+    .pipe(size())
+    .pipe(gulp.dest(imgOutput))
 });
+
