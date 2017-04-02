@@ -72,6 +72,7 @@ gulp.task("js:build:all", function(){
           SLATE_PATH+"javascripts/lib/_jquery_ui.js",
           SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
           SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
+          SLATE_PATH+"javascripts/lib/_lazysizes.js",
           SLATE_PATH+"javascripts/app/_lang.js",
           SLATE_PATH+"javascripts/app/_search.js",
           SLATE_PATH+"javascripts/app/_toc.js",
@@ -88,6 +89,7 @@ gulp.task("js:build:all_nosearch", function(){
           SLATE_PATH+"javascripts/lib/_jquery_ui.js",
           SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
           SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
+          SLATE_PATH+"javascripts/lib/_lazysizes.js",
           SLATE_PATH+"javascripts/app/_lang.js",
           SLATE_PATH+"javascripts/app/_toc.js",
           SLATE_PATH+"javascripts/app/_custom.js"])
