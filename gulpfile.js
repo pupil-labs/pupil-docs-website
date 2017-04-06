@@ -132,6 +132,22 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 // image min tasks - not using currently
 // =================================================================
 
+ gulp.task('image_min', function() {
+  options = {
+    resize: [1440,1440],
+    quality: 85,
+    progressive: true,
+    compressionLevel: 6,
+    sequentialRead: true,
+    trellisQuantisation: false
+  }
+
+  return gulp.src('build/media/images/**/*.{jpg,png}',{base: './'})
+    .pipe(plumber())
+    .pipe(image_min(options))
+    .pipe(gulp.dest('./'))
+}); 
+
 var imgInput = './content/images/**/*.{jpg,png}';
 var imgOutput = './content/images/';
 
