@@ -141,7 +141,7 @@ gulp.task('image_min', function() {
     .pipe(size())
     .pipe(imagemin())
     .pipe(rename({
-      suffix: "-preview"
+      suffix: "_preview"
     }))
     .pipe(img_resize({
       width : 50,
