@@ -132,7 +132,7 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 // image min tasks - not using currently
 // =================================================================
 
- gulp.task('image_min', function() {
+ gulp.task('imageMin', function() {
   options = {
     resize: [1440,1440],
     quality: 85,
