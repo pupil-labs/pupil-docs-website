@@ -160,8 +160,8 @@ gulp.task('image_min', function() {
       suffix: "_preview"
     }))
     .pipe(img_resize({
-      width : 50,
-      height : 40,
+      width : 10,
+      height : 10,
       crop : false,
       upscale : false
     }))
