@@ -14,6 +14,7 @@ before_install:
   - git submodule foreach git pull origin master  
   - nvm install 6.0.0
   - sudo apt-get install python-pygments
+  - sudo apt-get install graphicsmagick
   - npm install
   - gulp deploy
 install:
