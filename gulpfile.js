@@ -16,6 +16,10 @@ const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const minify = require('gulp-minify');
 const shell = require('gulp-shell');
+const rename = require('gulp-rename')
+const size = require('gulp-size')
+const imagemin = require('gulp-imagemin')
+const img_resize = require('gulp-image-resize')
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -68,6 +72,7 @@ gulp.task("js:build:all", function(){
           SLATE_PATH+"javascripts/lib/_jquery_ui.js",
           SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
           SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
+          SLATE_PATH+"javascripts/lib/_lazysizes.js",
           SLATE_PATH+"javascripts/app/_lang.js",
           SLATE_PATH+"javascripts/app/_search.js",
           SLATE_PATH+"javascripts/app/_toc.js",
@@ -84,6 +89,7 @@ gulp.task("js:build:all_nosearch", function(){
           SLATE_PATH+"javascripts/lib/_jquery_ui.js",
           SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
           SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
+          SLATE_PATH+"javascripts/lib/_lazysizes.js",
           SLATE_PATH+"javascripts/app/_lang.js",
           SLATE_PATH+"javascripts/app/_toc.js",
           SLATE_PATH+"javascripts/app/_custom.js"])
@@ -126,7 +132,7 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 // image min tasks - not using currently
 // =================================================================
 
-gulp.task('image_min', function() {
+ gulp.task('imageMin', function() {
   options = {
     resize: [1440,1440],
     quality: 85,
@@ -140,4 +146,26 @@ gulp.task('image_min', function() {
     .pipe(plumber())
     .pipe(image_min(options))
     .pipe(gulp.dest('./'))
+}); 
+
+var imgInput = './content/images/**/*.{jpg,png}';
+var imgOutput = './content/images/';
+
+gulp.task('image_min', function() {
+  return gulp.src(imgInput)
+    .pipe(plumber())
+    .pipe(size())
+    .pipe(imagemin())
+    .pipe(rename({
+      suffix: "_preview"
+    }))
+    .pipe(img_resize({
+      width : 10,
+      height : 10,
+      crop : false,
+      upscale : false
+    }))
+    .pipe(size())
+    .pipe(gulp.dest(imgOutput))
 });
+
