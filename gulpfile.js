@@ -133,7 +133,6 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 //                   for lazy loading
 // =================================================================
 
-
 var imgInput = './content/images/**/*.{jpg,png}';
 var imgOutput = './content/images/';
 
@@ -154,4 +153,3 @@ gulp.task('image_min', function() {
     .pipe(size())
     .pipe(gulp.dest(imgOutput))
 });
-
