@@ -136,6 +136,15 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 var imgInput = './content/images/**/*.{jpg,png}';
 var imgOutput = './content/images/';
 
+gulp.task('img:minify', function() {
+  return gulp.src(imgInput)
+    .pipe(plumber())
+    .pipe(size())
+    .pipe(imagemin())
+    .pipe(size())
+    .pipe(gulp.dest(imgOutput))
+});
+
 gulp.task('img:make:previews', function() {
   return gulp.src(imgInput)
     .pipe(plumber())
