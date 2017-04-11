@@ -20,8 +20,8 @@ before_install:
 install:
   - go get -v github.com/spf13/hugo
 script:
-  - gulp image_min
   - "/bin/bash ./scripts/tag.sh"
+  - gulp img:make:previews
   - cat config-tags.toml
   - hugo --config="config-tags.toml" --verbose
 after_success:

@@ -136,19 +136,23 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 var imgInput = './content/images/**/*.{jpg,png}';
 var imgOutput = './content/images/';
 
-gulp.task('image_min', function() {
+gulp.task('img:make:preview', function() {
   return gulp.src(imgInput)
     .pipe(plumber())
     .pipe(size())
-    .pipe(imagemin())
-    .pipe(rename({
-      suffix: "_preview"
-    }))
     .pipe(img_resize({
       width : 10,
       height : 10,
       crop : false,
       upscale : false
+    }))
+    .pipe(rename( function(path) {
+      // be warned - no `.` in image file names OK!
+      var regexp = /(\.[a-z\d]+)/;
+      // regex match the branch or tag name group e.g. .master or .v093
+      // prepend _preview so final file name is
+      // final file name = some-file-name_preview.master 
+      path.basename = path.basename.replace(regexp,"_preview"+"$1");
     }))
     .pipe(size())
     .pipe(gulp.dest(imgOutput))
