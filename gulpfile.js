@@ -136,7 +136,7 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 var imgInput = './content/images/**/*.{jpg,png}';
 var imgOutput = './content/images/';
 
-gulp.task('img:make:preview', function() {
+gulp.task('img:make:previews', function() {
   return gulp.src(imgInput)
     .pipe(plumber())
     .pipe(size())
