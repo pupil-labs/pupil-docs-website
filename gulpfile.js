@@ -157,7 +157,7 @@ gulp.task('img:make:previews', function() {
     }))
     .pipe(rename( function(path) {
       // be warned - no `.` in image file names OK!
-      var regexp = /(\.[a-z\d]+)/;
+      var regexp = /(\.[a-zA-Z\d]+)/;
       // regex match the branch or tag name group e.g. .master or .v093
       // prepend _preview so final file name is
       // final file name = some-file-name_preview.master 
