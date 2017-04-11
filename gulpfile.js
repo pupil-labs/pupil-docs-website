@@ -141,8 +141,8 @@ gulp.task('img:make:previews', function() {
     .pipe(plumber())
     .pipe(size())
     .pipe(img_resize({
-      width : 10,
-      height : 10,
+      width : 20,
+      height : 20,
       crop : false,
       upscale : false
     }))
