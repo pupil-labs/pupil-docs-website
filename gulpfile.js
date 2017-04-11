@@ -133,7 +133,7 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 //                   for lazy loading
 // =================================================================
 
-var imgInput = './content/images/**/*.{jpg,png}';
+var imgInput = './content/images/**/*.{jpg,jpeg,png}';
 var imgOutput = './content/images/';
 
 gulp.task('img:minify', function() {
@@ -156,7 +156,7 @@ gulp.task('img:make:previews', function() {
       upscale : false
     }))
     .pipe(rename( function(path) {
-      // be warned - no `.` in image file names OK!
+      // be warned - no `.` in image file names!
       var regexp = /(\.[a-zA-Z\d]+)/;
       // regex match the branch or tag name group e.g. .master or .v093
       // prepend _preview so final file name is
