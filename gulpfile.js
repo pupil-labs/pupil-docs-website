@@ -84,6 +84,16 @@ gulp.task("js:build:all", function(){
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
+gulp.task("js:build:plyr", function(){
+  return gulp.src([
+          SLATE_PATH+"javascripts/lib/_plyr.js",
+          SLATE_PATH+"javascripts/app/_plyrcontrols.js",
+          ])
+          .pipe(concat('plyr.min.js'))
+          .pipe(uglify())
+          .pipe(gulp.dest(SLATE_PATH+"javascripts"))
+});
+
 
 gulp.task("js:build:all_nosearch", function(){
   return gulp.src([SLATE_PATH+"javascripts/lib/_energize.js",
@@ -92,17 +102,15 @@ gulp.task("js:build:all_nosearch", function(){
           SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
           SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
           SLATE_PATH+"javascripts/lib/_lazysizes.js",
-          SLATE_PATH+"javascripts/lib/_plyr.js",
           SLATE_PATH+"javascripts/app/_lang.js",
           SLATE_PATH+"javascripts/app/_toc.js",
-          SLATE_PATH+"javascripts/app/_plyrcontrols.js",
           SLATE_PATH+"javascripts/app/_custom.js"])
           .pipe(concat('all_nosearch.min.js'))
           .pipe(uglify())
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
-gulp.task('js:build', ['js:build:all','js:build:all_nosearch'], function() {
+gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr'], function() {
   return;
 });
 
