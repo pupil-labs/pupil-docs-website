@@ -14,7 +14,7 @@ variables_func() {
   BRANCHES="master"
   EXCLUDE="logo.png|navbar.png|\.ico"
   OUTFILE="config-tags.toml"
-  PATTERN=".md|.jpg|.jpeg|.pdf|.svg|.gif"
+  PATTERN=".md|.jpg|.jpeg|.pdf|.svg|.gif|.mp4|.webm"
   SOURCE="config.toml"
   TAGNUM="3"
   WORKDIR="content/"
