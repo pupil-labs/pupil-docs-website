@@ -188,7 +188,9 @@ gulp.task('webp:make', function() {
   return gulp.src(imgInput)
     .pipe(plumber())
     .pipe(size())
-    .pipe(webp())
+    .pipe(webp({
+      quality : 80
+    }))
     .pipe(size())
     .pipe(gulp.dest(imgOutput))
 });
