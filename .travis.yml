@@ -22,7 +22,7 @@ install:
 script:
   - "/bin/bash ./scripts/tag.sh"
   - gulp img:minify
-  - gulp img:make:previews
+  - gulp img:make
   - cat config-tags.toml
   - hugo --config="config-tags.toml" --verbose
 after_success:
