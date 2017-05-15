@@ -158,6 +158,10 @@ gulp.task('img:minify', function() {
     .pipe(gulp.dest(imgOutput))
 });
 
+gulp.task('img:make', ['img:make:previews, webp:make'], function() {
+  return;
+});
+
 gulp.task('img:make:previews', function() {
   return gulp.src(imgInput)
     .pipe(plumber())
@@ -180,19 +184,11 @@ gulp.task('img:make:previews', function() {
     .pipe(gulp.dest(imgOutput))
 });
 
-gulp.task('webp:make:previews', function() {
+gulp.task('webp:make', function() {
   return gulp.src(imgInput)
     .pipe(plumber())
     .pipe(size())
     .pipe(webp())
-    .pipe(rename( function(path) {
-      // be warned - no `.` in image file names!
-      var regexp = /(\.[a-zA-Z\d]+)/;
-      // regex match the branch or tag name group e.g. .master or .v093
-      // prepend _preview so final file name is
-      // final file name = some-file-name_preview.master 
-      path.basename = path.basename.replace(regexp,"_preview"+"$1");
-    }))
     .pipe(size())
     .pipe(gulp.dest(imgOutput))
 });
