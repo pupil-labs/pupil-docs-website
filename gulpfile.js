@@ -158,7 +158,7 @@ gulp.task('img:minify', function() {
     .pipe(gulp.dest(imgOutput))
 });
 
-gulp.task('img:make', ['img:make:previews, webp:make'], function() {
+gulp.task('img:make', ['img:make:previews', 'webp:make'], function() {
   return;
 });
 
