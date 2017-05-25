@@ -108,11 +108,11 @@ main () {
   if ! [[ ${TAGNUM} -eq ${TAGNUM} ]] ; then 
     err "Error! Tag count is not a number"
   fi
-  tags+=$(git tag --sort=v:refname | tail -n "${TAGNUM}")
+  tags+=$(git tag -l | sort -V | tail -n "${TAGNUM}")
   tags=$(echo -e "${tags}" | sed -e "/^\s*$/d")
   latestTag=$(echo "${tags##*$'\n'}" | tr -d '.')
   echo -e "latest tag = ${latestTag}"
-  
+
   tagsCount=$(echo $(wc -l <<< "${tags}"))
   body=$(cat "${SOURCE}")
   body+="\n\ndefaultContentLanguage = \"${latestTag}\"\n\n[Languages]\n"
