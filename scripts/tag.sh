@@ -16,7 +16,7 @@ variables_func() {
   OUTFILE="config-tags.toml"
   PATTERN=".md|.jpg|.jpeg|.pdf|.svg|.gif|.mp4|.webm"
   SOURCE="config.toml"
-  TAGNUM="3"
+  TAGNUM="4"
   WORKDIR="content/"
 } # variables_func()
 
