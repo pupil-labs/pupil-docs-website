@@ -29,6 +29,7 @@
     "gulp-shell": "^0.6.3",
     "gulp-size": "^2.1.0",
     "gulp-uglify": "^2.1.0",
+    "gulp-webp": "^2.3.0",
     "run-sequence": "^1.2.2"
   }
 }

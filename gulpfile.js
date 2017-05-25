@@ -20,6 +20,7 @@ const rename = require('gulp-rename')
 const size = require('gulp-size')
 const imagemin = require('gulp-imagemin')
 const img_resize = require('gulp-image-resize')
+const webp = require('gulp-webp')
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -157,6 +158,10 @@ gulp.task('img:minify', function() {
     .pipe(gulp.dest(imgOutput))
 });
 
+gulp.task('img:make', function() {
+  return runSeq('img:minify', ['img:make:previews', 'webp:make']);
+});
+
 gulp.task('img:make:previews', function() {
   return gulp.src(imgInput)
     .pipe(plumber())
@@ -174,6 +179,17 @@ gulp.task('img:make:previews', function() {
       // prepend _preview so final file name is
       // final file name = some-file-name_preview.master 
       path.basename = path.basename.replace(regexp,"_preview"+"$1");
+    }))
+    .pipe(size())
+    .pipe(gulp.dest(imgOutput))
+});
+
+gulp.task('webp:make', function() {
+  return gulp.src(imgInput)
+    .pipe(plumber())
+    .pipe(size())
+    .pipe(webp({
+      quality : 80
     }))
     .pipe(size())
     .pipe(gulp.dest(imgOutput))
