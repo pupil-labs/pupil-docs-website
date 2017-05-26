@@ -159,7 +159,7 @@ gulp.task('img:minify', function() {
 });
 
 gulp.task('img:make', function() {
-  return runSeq('img:minify', ['img:make:previews', 'webp:make']);
+  return runSeq('img:minify', 'img:make:previews');
 });
 
 gulp.task('img:make:previews', function() {
