@@ -31,3 +31,6 @@ main.min.css
 # ignore build directories
 public
 config-tags.toml
+
+# ignore temp dir
+tmp
