@@ -28,7 +28,7 @@ script:
   - gulp img:make
   - cat config-tags.toml
   - hugo --config="config-tags.toml" --verbose
-  - "bin/bash ./scripts/html_check.sh"
+  - "/bin/bash ./scripts/html_check.sh"
 after_success:
   - "/bin/bash ./scripts/after_success.sh"
 env:
