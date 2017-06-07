@@ -63,4 +63,5 @@ Deployment with TravisCI. See `.travis.yml` and `/scripts` directory.
 ## Notes
 
 Setup `$GOPATH` on [Arch Linux](https://wiki.archlinux.org/index.php/Go#.24GOPATH)
+SSL with letsencrypt - [3rd party tool](https://gethttpsforfree.com)
 
