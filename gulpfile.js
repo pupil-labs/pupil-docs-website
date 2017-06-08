@@ -317,7 +317,7 @@ gulp.task('css:clean', function() {
           /.toc-f\w*/,
           /.search-\w*/,
           /.img-\w+(.)lazy\w*/,
-          /.cont\w*\s(?:.search-\w*|.search\w|.github-\w*|a)/
+          /.content\s.(?:search-|github-)\w*/
         ]}))
     .pipe(size())
     .pipe(gulp.dest('public/slate/stylesheets/'))
