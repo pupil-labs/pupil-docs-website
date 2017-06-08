@@ -58,7 +58,7 @@ gulp.task("css:build:print", function() {
           .pipe(gulp.dest(SLATE_PATH+"stylesheets"))
 });
 
-  
+
 gulp.task('css:build', ['css:build:screen', 'css:build:print'], function() {
   return;
 });
@@ -230,7 +230,7 @@ gulp.task('hugo:preview', shell.task([
 // =================================================================
 
 gulp.task('default', function() {
-  return runSeq(['css:build','js:build'],'css:clean','hugo:serve');
+  return runSeq(['css:build','js:build'],'hugo:serve');
 });
 
 
