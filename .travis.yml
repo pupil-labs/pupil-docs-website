@@ -24,6 +24,7 @@ script:
   - gulp img:make
   - cat config-tags.toml
   - hugo --config="config-tags.toml" --verbose
+  - gulp htmlmin
 after_success:
   - "/bin/bash ./scripts/after_success.sh"
 env:
