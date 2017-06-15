@@ -29,6 +29,7 @@ script:
   - cat config-tags.toml
   - hugo --config="config-tags.toml" --verbose
   - "/bin/bash ./scripts/html_check.sh"
+  - gulp htmlmin
 after_success:
   - "/bin/bash ./scripts/after_success.sh"
 env:

@@ -2,7 +2,7 @@
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 
-// node filesystem 
+// node filesystem
 const fs = require('fs');
 
 // plugins - site
@@ -16,11 +16,12 @@ const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const minify = require('gulp-minify');
 const shell = require('gulp-shell');
-const rename = require('gulp-rename')
-const size = require('gulp-size')
-const imagemin = require('gulp-imagemin')
-const img_resize = require('gulp-image-resize')
-const webp = require('gulp-webp')
+const rename = require('gulp-rename');
+const size = require('gulp-size');
+const imagemin = require('gulp-imagemin');
+const img_resize = require('gulp-image-resize');
+const webp = require('gulp-webp');
+const htmlmin = require('gulp-htmlmin');
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -120,6 +121,10 @@ gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr'],
 // hugo tasks
 // =================================================================
 
+gulp.task('hugo:disk', shell.task([
+  'hugo server --renderToDisk'])
+);
+
 gulp.task('hugo:serve', shell.task([
   'hugo server -D'])
 );
@@ -134,6 +139,10 @@ gulp.task('hugo:build', shell.task([
 
 gulp.task('default', function() {
   return runSeq(['css:build','js:build'],'hugo:serve');
+});
+
+gulp.task('public', function(cb) {
+  return runSeq(['css:build','js:build'],'hugo:disk');
 });
 
 
@@ -177,7 +186,7 @@ gulp.task('img:make:previews', function() {
       var regexp = /(\.[a-zA-Z\d]+)/;
       // regex match the branch or tag name group e.g. .master or .v093
       // prepend _preview so final file name is
-      // final file name = some-file-name_preview.master 
+      // final file name = some-file-name_preview.master
       path.basename = path.basename.replace(regexp,"_preview"+"$1");
     }))
     .pipe(size())
@@ -193,4 +202,19 @@ gulp.task('webp:make', function() {
     }))
     .pipe(size())
     .pipe(gulp.dest(imgOutput))
+});
+
+// =================================================================
+// htmlmin
+// =================================================================
+
+gulp.task('htmlmin', function() {
+  return gulp.src('./public/**/*.html')
+    .pipe(size())
+    .pipe(htmlmin({
+      collapseWhitespace: true,
+      removeComments: true
+    }))
+    .pipe(size())
+    .pipe(gulp.dest('./public'));
 });
