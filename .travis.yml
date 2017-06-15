@@ -18,12 +18,12 @@ before_install:
   - sudo apt-get install ruby-full
   - sudo apt-get install zlib1g-dev
   - gem install bundler
-  - gulp deploy
 install:
   - npm install
   - bundle install  
   - go get -v github.com/spf13/hugo
 script:
+  - gulp deploy
   - "/bin/bash ./scripts/tag.sh"
   - gulp img:make
   - cat config-tags.toml
