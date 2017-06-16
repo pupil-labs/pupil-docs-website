@@ -75,11 +75,11 @@ gulp.task("js:build:all", function(){
           SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
           SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
           SLATE_PATH+"javascripts/lib/_lazysizes.js",
-          SLATE_PATH+"javascripts/lib/_plyr.js",
+          SLATE_PATH+"javascripts/lib/_modernizr-webp.js",
           SLATE_PATH+"javascripts/app/_lang.js",
           SLATE_PATH+"javascripts/app/_search.js",
           SLATE_PATH+"javascripts/app/_toc.js",
-          SLATE_PATH+"javascripts/app/_plyrcontrols.js",
+          SLATE_PATH+"javascripts/app/_modernizr-webp_poster.js",
           SLATE_PATH+"javascripts/app/_custom.js"])
           .pipe(concat('all.min.js'))
           .pipe(uglify())
@@ -104,8 +104,10 @@ gulp.task("js:build:all_nosearch", function(){
           SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
           SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
           SLATE_PATH+"javascripts/lib/_lazysizes.js",
+          SLATE_PATH+"javascripts/lib/_modernizr-webp.js",
           SLATE_PATH+"javascripts/app/_lang.js",
           SLATE_PATH+"javascripts/app/_toc.js",
+          SLATE_PATH+"javascripts/app/_modernizr-webp_poster.js",
           SLATE_PATH+"javascripts/app/_custom.js"])
           .pipe(concat('all_nosearch.min.js'))
           .pipe(uglify())
@@ -156,7 +158,9 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 // =================================================================
 
 var imgInput = './content/images/**/*.{jpg,jpeg,png}';
+var vidInput =  './content/videos/**/*.jpg';
 var imgOutput = './content/images/';
+var vidOutput = './content/videos/';
 
 gulp.task('img:minify', function() {
   return gulp.src(imgInput)
@@ -193,7 +197,11 @@ gulp.task('img:make:previews', function() {
     .pipe(gulp.dest(imgOutput))
 });
 
-gulp.task('webp:make', function() {
+gulp.task('webp:make', ['webp:make:img','webp:make:vid'], function() {
+  return;
+});
+
+gulp.task('webp:make:img', function() {
   return gulp.src(imgInput)
     .pipe(plumber())
     .pipe(size())
@@ -202,6 +210,17 @@ gulp.task('webp:make', function() {
     }))
     .pipe(size())
     .pipe(gulp.dest(imgOutput))
+});
+
+gulp.task('webp:make:vid', function() {
+  return gulp.src(vidInput)
+    .pipe(plumber())
+    .pipe(size())
+    .pipe(webp({
+      quality : 80
+    }))
+    .pipe(size())
+    .pipe(gulp.dest(vidOutput))
 });
 
 // =================================================================
