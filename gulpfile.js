@@ -96,6 +96,12 @@ gulp.task("js:build:plyr", function(){
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
+gulp.task("js:build:yt", function(){
+  return gulp.src(SLATE_PATH+"javascripts/app/_youtube-lazyload.js")
+          .pipe(concat('yt-lazyload.min.js'))
+          .pipe(uglify())
+          .pipe(gulp.dest(SLATE_PATH+"javascripts"))
+});
 
 gulp.task("js:build:all_nosearch", function(){
   return gulp.src([SLATE_PATH+"javascripts/lib/_energize.js",
@@ -114,7 +120,7 @@ gulp.task("js:build:all_nosearch", function(){
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
-gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr'], function() {
+gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr', 'js:build:yt'], function() {
   return;
 });
 
