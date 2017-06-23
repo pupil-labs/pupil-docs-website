@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e # stop script on error
-ruby scripts/html_check.rb
+bundle exec htmlproofer ./public --check-html
