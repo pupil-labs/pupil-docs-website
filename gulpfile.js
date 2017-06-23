@@ -2,7 +2,7 @@
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 
-// node filesystem 
+// node filesystem
 const fs = require('fs');
 
 // plugins - site
@@ -21,6 +21,8 @@ const size = require('gulp-size')
 const imagemin = require('gulp-imagemin')
 const img_resize = require('gulp-image-resize')
 const webp = require('gulp-webp')
+const replace = require('gulp-string-replace');
+const git = require('git-rev-sync');
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -186,7 +188,7 @@ gulp.task('img:make:previews', function() {
       var regexp = /(\.[a-zA-Z\d]+)/;
       // regex match the branch or tag name group e.g. .master or .v093
       // prepend _preview so final file name is
-      // final file name = some-file-name_preview.master 
+      // final file name = some-file-name_preview.master
       path.basename = path.basename.replace(regexp,"_preview"+"$1");
     }))
     .pipe(size())
@@ -202,4 +204,16 @@ gulp.task('webp:make', function() {
     }))
     .pipe(size())
     .pipe(gulp.dest(imgOutput))
+});
+
+// =================================================================
+// Service worker task - append git hash for cache update
+// =================================================================
+
+var gitshort = git.short()
+
+gulp.task('sw:rev', function() {
+  gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
+    .pipe(replace(/@@hash@@/g, gitshort))
+    .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
 });
