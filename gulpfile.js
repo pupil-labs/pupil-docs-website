@@ -239,9 +239,10 @@ gulp.task('webp:make:img', function() {
 var gitshort = git.short()
 
 gulp.task('sw:rev', function() {
-  gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
+  return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
     .pipe(replace(/#v@hash@|\b[0-9a-f]{7}/g, gitshort))
     .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
+});
 
 gulp.task('webp:make:vid', function() {
   return gulp.src(vidInput)
