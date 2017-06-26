@@ -23,6 +23,7 @@ const img_resize = require('gulp-image-resize')
 const webp = require('gulp-webp')
 const replace = require('gulp-string-replace');
 const git = require('git-rev-sync');
+const htmlmin = require('gulp-htmlmin');
 
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
