@@ -214,6 +214,6 @@ var gitshort = git.short()
 
 gulp.task('sw:rev', function() {
   gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
-    .pipe(replace(/#v@hash@|(?:#\w{7})/g, gitshort))
+    .pipe(replace(/#v@hash@|\b[0-9a-f]{7}/g, gitshort))
     .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
 });
