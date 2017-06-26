@@ -16,12 +16,14 @@ const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const minify = require('gulp-minify');
 const shell = require('gulp-shell');
-const rename = require('gulp-rename');
-const size = require('gulp-size');
-const imagemin = require('gulp-imagemin');
-const img_resize = require('gulp-image-resize');
-const webp = require('gulp-webp');
-const htmlmin = require('gulp-htmlmin');
+const rename = require('gulp-rename')
+const size = require('gulp-size')
+const imagemin = require('gulp-imagemin')
+const img_resize = require('gulp-image-resize')
+const webp = require('gulp-webp')
+const replace = require('gulp-string-replace');
+const git = require('git-rev-sync');
+
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -96,6 +98,16 @@ gulp.task("js:build:plyr", function(){
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
+gulp.task("js:build:sw", function(){
+  return gulp.src([
+          SLATE_PATH+"javascripts/app/_pupil_sw.js",
+          ])
+          .pipe(concat('pupil_sw.min.js'))
+          .pipe(uglify())
+          .pipe(gulp.dest('./content'))
+});
+
+
 gulp.task("js:build:yt", function(){
   return gulp.src(SLATE_PATH+"javascripts/app/_youtube-lazyload.js")
           .pipe(concat('yt-lazyload.min.js'))
@@ -120,7 +132,8 @@ gulp.task("js:build:all_nosearch", function(){
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
-gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr', 'js:build:yt'], function() {
+gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr', 'js:build:yt', 'js:build:sw'], function() {
+
   return;
 });
 
@@ -217,6 +230,18 @@ gulp.task('webp:make:img', function() {
     .pipe(size())
     .pipe(gulp.dest(imgOutput))
 });
+
+
+// =================================================================
+// Service worker task - append git hash for cache update
+// =================================================================
+
+var gitshort = git.short()
+
+gulp.task('sw:rev', function() {
+  gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
+    .pipe(replace(/#v@hash@|\b[0-9a-f]{7}/g, gitshort))
+    .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
 
 gulp.task('webp:make:vid', function() {
   return gulp.src(vidInput)
