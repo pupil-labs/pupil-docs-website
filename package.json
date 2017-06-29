@@ -34,6 +34,7 @@
     "gulp-string-replace": "^0.4.0",
     "gulp-uglify": "^2.1.0",
     "gulp-webp": "^2.3.0",
+    "jsdom": "^11.0.0",
     "run-sequence": "^1.2.2"
   }
 }

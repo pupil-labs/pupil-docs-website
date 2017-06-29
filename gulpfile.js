@@ -22,9 +22,12 @@ const imagemin = require('gulp-imagemin')
 const img_resize = require('gulp-image-resize')
 const webp = require('gulp-webp')
 const replace = require('gulp-string-replace');
-const git = require('git-rev-sync');
+const hash = require('git-rev-sync');
 const find = require('find');
 const htmlmin = require('gulp-htmlmin');
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+const dom = new JSDOM();
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -247,7 +250,7 @@ gulp.task('webp:make:vid', function() {
 // Service worker task - append git hash for cache update
 // =================================================================
 
-var gitshort = git.short()
+var gitshort = hash.short()
 
 gulp.task('sw:rev', function() {
   return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
@@ -269,6 +272,64 @@ gulp.task('files', function() {
       //     .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
       // console.log(assetPaths)
   })
+});
+
+// manipulate the DOM within the html file
+gulp.task('cache', function() {
+    JSDOM.fromFile('./public/index.html').then(function(dom){
+      // video
+      var video = dom.window.document.getElementsByTagName('video');
+      var videoPaths = [];
+      for (var i = 0; i < video.length; i++) {
+          var allVideo = video[i];
+          var webmSrc = allVideo.childNodes[0].getAttribute('src')
+          var mp4Src = allVideo.childNodes[1].getAttribute('src')
+          videoPaths.push("'"+webmSrc+"'")
+          videoPaths.push("'"+mp4Src+"'")
+      }
+      // video poster
+      var videoPoster = dom.window.document.getElementsByTagName('video');
+      var posterPaths = [];
+      for (var p = 0; p < videoPoster.length; p++) {
+        var allPosters = videoPoster[p];
+        var posterSrc = allPosters.getAttribute('poster')
+        posterPaths.push("'"+posterSrc+"'")
+      }
+      // picture
+      var pic = dom.window.document.getElementsByTagName('picture');
+      var picPaths = [];
+      for (var n = 0; n < pic.length; n++) {
+        var allPic = pic[n];
+        var webpSrc = allPic.childNodes[0].getAttribute('srcset')
+        var jpegSrc = allPic.childNodes[1].getAttribute('srcset')
+        picPaths.push("'"+webpSrc+"'")
+        picPaths.push("'"+jpegSrc+"'")
+      }
+      // intro
+      var introImg = dom.window.document.getElementsByClassName('intro-image');
+      var introPaths = [];
+      for (var c = 0; c < introImg.length; c++) {
+        var allIntro = introImg[c];
+        var jpgSrc = allIntro.getAttribute('data-src')
+        introPaths.push("'"+jpgSrc+"'")
+      }
+      // logo
+      var logoImg = dom.window.document.getElementsByClassName('logo');
+      var logoPaths = [];
+      for (var l = 0; l < logoImg.length; l++) {
+        var allLogo = logoImg[l];
+        var svgSrc = allLogo.getAttribute('src')
+        logoPaths.push("'"+svgSrc+"'")
+      }
+      // combine all arrays into one big array
+      var cache = videoPaths.concat(posterPaths, picPaths, introPaths, logoPaths);
+      var allCache = cache.join('\n\t')
+      console.log(allCache);
+      // find and replace a string in the service worker js with all cache
+      return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
+        .pipe(replace(/#v@cache@/g, '['+allCache+'];'))
+        .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
+    })
 });
 
 // =================================================================
