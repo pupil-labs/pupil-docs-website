@@ -23,6 +23,7 @@ const img_resize = require('gulp-image-resize')
 const webp = require('gulp-webp')
 const replace = require('gulp-string-replace');
 const git = require('git-rev-sync');
+const find = require('find');
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -217,3 +218,21 @@ gulp.task('sw:rev', function() {
     .pipe(replace(/#v@hash@|\b[0-9a-f]{7}/g, gitshort))
     .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
 });
+
+
+gulp.task('files', function() {
+
+  find.file(/content\/(?:(images|videos).+)(.jpg|.webp|.mp4|.webm|.svg)/,__dirname, function(files) {
+      var assetPaths = [];
+      for (var i=0; i < files.length; i++) {
+        var filePath = files[i].split('content').pop()
+        assetPaths.push("'"+filePath+"'")
+        console.log(filePath)
+      }
+      // return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
+      //     .pipe(replace(/#v@hash@/g, '['+assetPaths+']'))
+      //     .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
+      // console.log(assetPaths)
+  })
+});
+
