@@ -15,6 +15,7 @@
   "homepage": "https://github.com/pupil-labs/pupil-docs#readme",
   "devDependencies": {
     "babel-preset-es2015": "^6.24.0",
+    "find": "^0.2.7",
     "git-rev-sync": "^1.9.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
