@@ -28,6 +28,7 @@ const htmlmin = require('gulp-htmlmin');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 const dom = new JSDOM();
+const git = require('simple-git');
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -274,6 +275,14 @@ gulp.task('files', function() {
   })
 });
 
+gulp.task('git:tags', function() {
+  git('./content')
+    .tags(['-l'], function(err, tags){
+      var gitTag = tags.latest;
+      // console.log(tags.latest);
+    });
+});
+
 // manipulate the DOM within the html file
 gulp.task('cache', function() {
     JSDOM.fromFile('./public/index.html').then(function(dom){
@@ -284,8 +293,9 @@ gulp.task('cache', function() {
           var allVideo = video[i];
           var webmSrc = allVideo.childNodes[0].getAttribute('src')
           var mp4Src = allVideo.childNodes[1].getAttribute('src')
-          videoPaths.push("'"+webmSrc+"'")
-          videoPaths.push("'"+mp4Src+"'")
+          // console.log(webmSrc.split('.').join('.'+latestTag+'.'));
+          // videoPaths.push("'"+webmSrc+"'")
+          // videoPaths.push("'"+mp4Src+"'")
       }
       // video poster
       var videoPoster = dom.window.document.getElementsByTagName('video');
@@ -323,12 +333,13 @@ gulp.task('cache', function() {
       }
       // combine all arrays into one big array
       var cache = videoPaths.concat(posterPaths, picPaths, introPaths, logoPaths);
-      var allCache = cache.join('\n\t')
-      console.log(allCache);
+      // console.log(videoPaths);
+      // var allCache = cache.join('\n\t')
+      // console.log(allCache);
       // find and replace a string in the service worker js with all cache
-      return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
-        .pipe(replace(/#v@cache@/g, '['+allCache+'];'))
-        .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
+      // return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
+      //   .pipe(replace(/#v@cache@/g, '['+allCache+'];'))
+      //   .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
     })
 });
 
