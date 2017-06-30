@@ -5,6 +5,7 @@ const gutil = require('gulp-util');
 // node filesystem
 const fs = require('fs');
 
+const { exec } = require('child_process');
 // plugins - site
 const sass = require('gulp-sass');
 const prefixer = require('gulp-autoprefixer');
@@ -21,14 +22,15 @@ const size = require('gulp-size')
 const imagemin = require('gulp-imagemin')
 const img_resize = require('gulp-image-resize')
 const webp = require('gulp-webp')
-const replace = require('gulp-string-replace');
+const replace = require('gulp-replace');
 const hash = require('git-rev-sync');
 const find = require('find');
 const htmlmin = require('gulp-htmlmin');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 const dom = new JSDOM();
-const git = require('simple-git');
+
+const { execSync } = require('child_process');
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -107,8 +109,8 @@ gulp.task("js:build:sw", function(){
   return gulp.src([
           SLATE_PATH+"javascripts/app/_pupil_sw.js",
           ])
-          .pipe(concat('pupil_sw.min.js'))
-          .pipe(uglify())
+          .pipe(concat('pupil_sw.js'))
+          // .pipe(uglify())
           .pipe(gulp.dest('./content'))
 });
 
@@ -137,7 +139,7 @@ gulp.task("js:build:all_nosearch", function(){
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
-gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr', 'js:build:yt', 'js:build:sw'], function() {
+gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr', 'js:build:yt'], function() {
 
   return;
 });
@@ -170,7 +172,6 @@ gulp.task('default', function() {
 gulp.task('public', function(cb) {
   return runSeq(['css:build','js:build'],'hugo:disk');
 });
-
 
 gulp.task('deploy', ['css:build','js:build'], function() {
   return;
@@ -251,41 +252,119 @@ gulp.task('webp:make:vid', function() {
 // Service worker task - append git hash for cache update
 // =================================================================
 
+// Build and minify all service workers to the content dir
+// sw:uncache -> sw:cache -> build:sw
+
+// ========================================================
+// Create service worker for each tag
+
+var tag1 = execSync('cd content && git tag -l | sort -V | tail -n 1 | tr -d "."').toString().replace(/[\n\r]/g, '');
+var tag2 = execSync('cd content && git tag -l | sort -V | tail -n 2 | head -n 1 | tr -d "."').toString().replace(/[\n\r]/g, '');
+var tag3 = execSync('cd content && git tag -l | sort -V | head -n 2 | tail -n 1 | tr -d "."').toString().replace(/[\n\r]/g, '');
+
+gulp.task('sw:build:all', ['js:sw1','js:sw2', 'js:sw3', 'js:sw4'], function() {
+  return;
+});
+
+gulp.task("js:sw1", function(){
+  return gulp.src([
+          SLATE_PATH+"javascripts/app/_pupil_sw.js",
+          ])
+          .pipe(rename({
+            prefix: "pupil_sw",
+            basename: "_"+tag1+".min"
+          }))
+          .pipe(gulp.dest('./public'))
+});
+
+gulp.task("js:sw2", function(){
+  return gulp.src([
+          SLATE_PATH+"javascripts/app/_pupil_sw.js",
+          ])
+          .pipe(rename({
+            prefix: "pupil_sw",
+            basename: "_"+tag2+".min"
+          }))
+          .pipe(gulp.dest('./public/'+tag2))
+});
+
+gulp.task("js:sw3", function(){
+  return gulp.src([
+          SLATE_PATH+"javascripts/app/_pupil_sw.js",
+          ])
+          .pipe(rename({
+            prefix: "pupil_sw",
+            basename: "_"+tag3+".min"
+          }))
+          .pipe(gulp.dest('./public/'+tag3))
+});
+
+gulp.task("js:sw4", function(){
+  return gulp.src([
+          SLATE_PATH+"javascripts/app/_pupil_sw.js",
+          ])
+          .pipe(rename({
+            prefix: "pupil_sw",
+            basename: "_master.min"
+          }))
+          .pipe(gulp.dest('./public/master/'))
+});
+
+// ========================================================
+// Rev & cache all service worker
+
+gulp.task('sw:cache:all', function() {
+  return runSeq(
+    ['sw:uncache','sw:rev'],
+    ['cache:tag1','cache:tag2','cache:tag3','cache:tag4']
+    );
+});
+
+//short commit hash
 var gitshort = hash.short()
 
+// replace commit hash via regex replace
 gulp.task('sw:rev', function() {
-  return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
+  return gulp.src(SLATE_PATH+"javascripts/app/.js")
     .pipe(replace(/#v@hash@|\b[0-9a-f]{7}/g, gitshort))
     .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
 });
 
-gulp.task('files', function() {
+// remove all cache paths
+gulp.task('sw:uncache', function() {
+  var regex = "(...v.+"+tag+".+|...i.+"+tag+".+)";
+  var tagEx = new RegExp(regex, "g");
+  gulp.src([
+    "./public/pupil_sw"+tag1+"min.js",
+    "./public/pupil_sw"+tag2+"min.js",
+    "./public/pupil_sw"+tag3+"min.js",
+    "./public/pupil_sw_master.min.js"
+    ])
+    .pipe(replace(tagEx, '#v@cache@'))
+    .pipe(replace(/[^\ ]#v@cache@/g, ''))
+    .pipe(gulp.dest('./public/'))
+});
 
+// get asset paths from the content and replace via regex
+gulp.task('sw:local:cache', function() {
   find.file(/content\/(?:(images|videos).+)(.jpg|.webp|.mp4|.webm|.svg)/,__dirname, function(files) {
       var assetPaths = [];
       for (var i=0; i < files.length; i++) {
         var filePath = files[i].split('content').pop()
         assetPaths.push("'"+filePath+"'")
-        console.log(filePath)
+        // console.log(filePath)
       }
       // return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
       //     .pipe(replace(/#v@hash@/g, '['+assetPaths+']'))
       //     .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
-      // console.log(assetPaths)
+      console.log(assetPaths)
   })
 });
 
-gulp.task('git:tags', function() {
-  git('./content')
-    .tags(['-l'], function(err, tags){
-      var gitTag = tags.latest;
-      // console.log(tags.latest);
-    });
-});
-
-// manipulate the DOM within the html file
-gulp.task('cache', function() {
+// manipulate the DOM within the html file to get all the asset paths for caching
+gulp.task('sw:cache', function() {
     JSDOM.fromFile('./public/index.html').then(function(dom){
+
       // video
       var video = dom.window.document.getElementsByTagName('video');
       var videoPaths = [];
@@ -293,9 +372,8 @@ gulp.task('cache', function() {
           var allVideo = video[i];
           var webmSrc = allVideo.childNodes[0].getAttribute('src')
           var mp4Src = allVideo.childNodes[1].getAttribute('src')
-          // console.log(webmSrc.split('.').join('.'+latestTag+'.'));
-          // videoPaths.push("'"+webmSrc+"'")
-          // videoPaths.push("'"+mp4Src+"'")
+          videoPaths.push("'"+webmSrc+"'")
+          videoPaths.push("'"+mp4Src+"'")
       }
       // video poster
       var videoPoster = dom.window.document.getElementsByTagName('video');
@@ -333,13 +411,12 @@ gulp.task('cache', function() {
       }
       // combine all arrays into one big array
       var cache = videoPaths.concat(posterPaths, picPaths, introPaths, logoPaths);
-      // console.log(videoPaths);
-      // var allCache = cache.join('\n\t')
-      // console.log(allCache);
+      var domCache = cache.join('\n\t')
+      // console.log(cache.length);
       // find and replace a string in the service worker js with all cache
-      // return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
-      //   .pipe(replace(/#v@cache@/g, '['+allCache+'];'))
-      //   .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
+      return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
+        .pipe(replace(/#v@cache@/g, '['+domCache+'];'))
+        .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
     })
 });
 
