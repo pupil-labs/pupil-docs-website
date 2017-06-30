@@ -27,11 +27,13 @@ script:
   - gulp deploy
   - "/bin/bash ./scripts/tag.sh"
   - gulp img:make
-  - gulp sw:rev
   - cat config-tags.toml
   - hugo --config="config-tags.toml" --verbose
   - "/bin/bash ./scripts/html_check.sh"
   - gulp htmlmin
+  - gulp sw:build:all
+  - gulp sw:rev
+  - gulp cache:all
 after_success:
   - "/bin/bash ./scripts/after_success.sh"
 env:
