@@ -104,14 +104,14 @@ gulp.task("js:build:plyr", function(){
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
-gulp.task("js:build:sw", function(){
-  return gulp.src([
-          SLATE_PATH+"javascripts/app/_pupil_sw.js",
-          ])
-          .pipe(concat('pupil_sw.js'))
-          // .pipe(uglify())
-          .pipe(gulp.dest('./content'))
-});
+// gulp.task("js:build:sw", function(){
+//   return gulp.src([
+//           SLATE_PATH+"javascripts/app/_pupil_sw.js",
+//           ])
+//           .pipe(concat('pupil_sw.js'))
+//           .pipe(uglify())
+//           .pipe(gulp.dest('./content'))
+// });
 
 
 gulp.task("js:build:yt", function(){
