@@ -32,8 +32,7 @@ script:
   - "/bin/bash ./scripts/html_check.sh"
   - gulp htmlmin
   - gulp sw:build:all
-  - gulp sw:rev
-  - gulp cache:all
+  - gulp sw:min:all
 after_success:
   - "/bin/bash ./scripts/after_success.sh"
 env:
