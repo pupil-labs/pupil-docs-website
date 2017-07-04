@@ -13,23 +13,33 @@ before_install:
   - "/bin/bash ./scripts/before_install.sh"
   - git submodule foreach git pull origin master  
   - nvm install 6.0.0
+  - sudo apt-get -qq update
   - sudo apt-get install python-pygments
   - sudo apt-get install graphicsmagick
-  - npm install
-  - gulp deploy
+  - sudo apt-get install ruby-full
+  - sudo apt-get install zlib1g-dev
+  - gem install bundler
 install:
+  - npm install
+  - bundle install  
   - go get -v github.com/spf13/hugo
 script:
+  - gulp deploy
   - "/bin/bash ./scripts/tag.sh"
   - gulp img:make
+  - gulp sw:rev
   - cat config-tags.toml
   - hugo --config="config-tags.toml" --verbose
+  - "/bin/bash ./scripts/html_check.sh"
+  - gulp htmlmin
 after_success:
   - "/bin/bash ./scripts/after_success.sh"
 env:
   global:
     - secure: fW/nf4g4pD8NXES+HLBLRDc2A44F1WB3gowUSkAG+OSqaykxNlELlfC0C6tMga2Ko82WAFjOgu3Pznd35ngdxcsP0SmfguNEvP2EPUSuq2Fi4GwaeGTC7/YZPJ+sQgrgnrKJZQcVMmu9ITlpQrnV3B7WOm1ennQ2QVt3GiVjMTqeUfLvkACNc6xS8kj5Z27vNQrjkVfuxF/RsQmncC7/FL7bnFwdumvSgbJvTCJmpM9IF6ODYZYeFut+N9BLuO60dlueRrViJ8syKldmRKO8juOQx97/QgDNFYmUi/Hz2DuEoWwLO2rskrB6oYOuozTD2I1SA9tHQfkFwTVHENahzWgusMnr9AiG3L+/dJascZVSV6/z8gFahHXA+j35jhivm3pPE6Bavr7fDFqV3NC8d02VtKy/TsLs7k/L/lm8ukws9Hqfq7LHR+EDcJ3rOBMsQvblEV7PYmnD6IMP3Xf9w10DrvliWcEZ4nZ2Wq3Qvc5rFl7ZkoY0SxGHl9w7Z33TfzI03xsigBYFMfaAUblAOKN53i15opNpdLVPVUtjih6BzVoRNBqk55S1/kfbmG3tTaKhWIFu4BMqIbmNHoZc8cGiBE+W/uAGPPsUKhU6qGRfuDX24OS5Fe+RZmdE+wJTIm22C3rCAqve4myC28A4lUtxfg60vwWFwMheJDgRk9g=
     - secure: G9VXvy5Elt+CCIehEUdtLQILc5nfR1+LG0WDjjxF13gQ+AVb1uMVUF9r3cQaJU7+6h8Tq8XPR8egRoEg3NDvHjiOXm30nx2xlPGUvGP0Ctq5IPvsGv0RyzJWjG/Fbyn9SBJEL5Fu0QMPdAbxHZa+JM5K6C/1HDR4U3YtmMWs4qparshP4sgVuImSMWxq6bJlOypoxO24Xo+Z/gJoXSrFLjSobCaoENfQFfMWB9tQ5ChMFFkY+Wjgcv/GfHgKy28VtdCYuwboAYbHU7Wp6WAfGPt76rHTcQut2wvp54CFxoORlIK2ICGmkJNjDHwMgXA036bKwuTyAFfYg8X12Ugq8g7Z996eERzncH9OVjIlrKPHkelXRKsB5Ad8xiMIoz876mGMBU9LZJYDtskSBPk2lAAckjZoTlQcLW9NarohoVn2eJ7NX9O6sNgCEsnbZDkCa+JmL3lj5BNgQ6Tv8PrscMcOhAZG9K+usdu6CuGBVpmXMr3JCRzIVb+qUx/b2QcEF19g+jZCW98MLvHmwvvAOConbk/ERPruxTuWKNm+UYlb1TX6MNnjiErenx7akM+34/qQdqA2vo3Dxmq/C7kymKOsTir95UmLxPR69wd1UtLuj82Xr1u2fCs70Gi4phmthrmuUSpv1ZM097d+6DiRL7hFn1VhpqTva5cMFkQ1/MU=
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true # speeds up installation of html-proofer
 cache:
   directories:
     - node_modules
+    - $TRAVIS_BUILD_DIR/tmp/.htmlproofer

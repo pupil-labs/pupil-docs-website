@@ -2,7 +2,7 @@
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 
-// node filesystem 
+// node filesystem
 const fs = require('fs');
 
 // plugins - site
@@ -24,6 +24,9 @@ const webp = require('gulp-webp')
 const uncss = require('gulp-uncss')
 const browserSync = require('browser-sync')
 const reload = browserSync.reload
+const replace = require('gulp-string-replace');
+const git = require('git-rev-sync');
+const htmlmin = require('gulp-htmlmin');
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -113,11 +116,11 @@ gulp.task("js:build:all", function(){
           SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
           SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
           SLATE_PATH+"javascripts/lib/_lazysizes.js",
-          SLATE_PATH+"javascripts/lib/_plyr.js",
+          SLATE_PATH+"javascripts/lib/_modernizr-webp.js",
           SLATE_PATH+"javascripts/app/_lang.js",
           SLATE_PATH+"javascripts/app/_search.js",
           SLATE_PATH+"javascripts/app/_toc.js",
-          SLATE_PATH+"javascripts/app/_plyrcontrols.js",
+          SLATE_PATH+"javascripts/app/_modernizr-webp_poster.js",
           SLATE_PATH+"javascripts/app/_custom.js"])
           .pipe(concat('all.min.js'))
           .pipe(uglify())
@@ -134,6 +137,22 @@ gulp.task("js:build:plyr", function(){
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
+gulp.task("js:build:sw", function(){
+  return gulp.src([
+          SLATE_PATH+"javascripts/app/_pupil_sw.js",
+          ])
+          .pipe(concat('pupil_sw.min.js'))
+          .pipe(uglify())
+          .pipe(gulp.dest('./content'))
+});
+
+
+gulp.task("js:build:yt", function(){
+  return gulp.src(SLATE_PATH+"javascripts/app/_youtube-lazyload.js")
+          .pipe(concat('yt-lazyload.min.js'))
+          .pipe(uglify())
+          .pipe(gulp.dest(SLATE_PATH+"javascripts"))
+});
 
 gulp.task("js:build:all_nosearch", function(){
   return gulp.src([SLATE_PATH+"javascripts/lib/_energize.js",
@@ -142,15 +161,18 @@ gulp.task("js:build:all_nosearch", function(){
           SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
           SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
           SLATE_PATH+"javascripts/lib/_lazysizes.js",
+          SLATE_PATH+"javascripts/lib/_modernizr-webp.js",
           SLATE_PATH+"javascripts/app/_lang.js",
           SLATE_PATH+"javascripts/app/_toc.js",
+          SLATE_PATH+"javascripts/app/_modernizr-webp_poster.js",
           SLATE_PATH+"javascripts/app/_custom.js"])
           .pipe(concat('all_nosearch.min.js'))
           .pipe(uglify())
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
-gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr'], function() {
+gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr', 'js:build:yt', 'js:build:sw'], function() {
+
   return;
 });
 
@@ -213,6 +235,10 @@ gulp.task('js:build:preview', ['js:preview:all','js:preview:all_nosearch', 'js:p
 // hugo tasks
 // =================================================================
 
+gulp.task('hugo:disk', shell.task([
+  'hugo server --renderToDisk'])
+);
+
 gulp.task('hugo:serve', shell.task([
   'hugo server -D'])
 );
@@ -233,6 +259,10 @@ gulp.task('default', function() {
   return runSeq(['css:build','js:build'],'hugo:serve');
 });
 
+gulp.task('public', function(cb) {
+  return runSeq(['css:build','js:build'],'hugo:disk');
+});
+
 
 gulp.task('deploy', ['css:build','js:build'], function() {
   return;
@@ -244,7 +274,9 @@ gulp.task('deploy', ['css:build','js:build'], function() {
 // =================================================================
 
 var imgInput = './content/images/**/*.{jpg,jpeg,png}';
+var vidInput =  './content/videos/**/*.jpg';
 var imgOutput = './content/images/';
+var vidOutput = './content/videos/';
 
 gulp.task('img:minify', function() {
   return gulp.src(imgInput)
@@ -274,14 +306,18 @@ gulp.task('img:make:previews', function() {
       var regexp = /(\.[a-zA-Z\d]+)/;
       // regex match the branch or tag name group e.g. .master or .v093
       // prepend _preview so final file name is
-      // final file name = some-file-name_preview.master 
+      // final file name = some-file-name_preview.master
       path.basename = path.basename.replace(regexp,"_preview"+"$1");
     }))
     .pipe(size())
     .pipe(gulp.dest(imgOutput))
 });
 
-gulp.task('webp:make', function() {
+gulp.task('webp:make', ['webp:make:img','webp:make:vid'], function() {
+  return;
+});
+
+gulp.task('webp:make:img', function() {
   return gulp.src(imgInput)
     .pipe(plumber())
     .pipe(size())
@@ -342,11 +378,48 @@ gulp.task('preview', function(cb) {
                 );
 });
 
-
 gulp.task('watch', ['preview'], function() {
   // preview with browserSync
   browserSync.init({server: "public", port:3000})
   gulp.watch(SLATE_PATH+"javascripts/**/*.js", ['js:preview'])
   gulp.watch(SLATE_PATH+"stylesheets/*.{css,scss}", ['css:preview'])
   gulp.watch("content/**/*.md", ['md:preview'])
+ 
+
+// =================================================================
+// Service worker task - append git hash for cache update
+// =================================================================
+
+var gitshort = git.short()
+
+gulp.task('sw:rev', function() {
+  return gulp.src(SLATE_PATH+"javascripts/app/_pupil_sw.js")
+    .pipe(replace(/#v@hash@|\b[0-9a-f]{7}/g, gitshort))
+    .pipe(gulp.dest(SLATE_PATH+"javascripts/app"))
+});
+
+gulp.task('webp:make:vid', function() {
+  return gulp.src(vidInput)
+    .pipe(plumber())
+    .pipe(size())
+    .pipe(webp({
+      quality : 80
+    }))
+    .pipe(size())
+    .pipe(gulp.dest(vidOutput))
+});
+
+// =================================================================
+// htmlmin
+// =================================================================
+
+gulp.task('htmlmin', function() {
+  return gulp.src('./public/**/*.html')
+    .pipe(size())
+    .pipe(htmlmin({
+      collapseWhitespace: true,
+      removeComments: true
+    }))
+    .pipe(size())
+    .pipe(gulp.dest('./public'));
 });
