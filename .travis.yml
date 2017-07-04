@@ -25,8 +25,8 @@ install:
   - go get -v github.com/spf13/hugo
 script:
   - gulp deploy
-  - "/bin/bash ./scripts/tag.sh"
   - gulp img:make
+  - "/bin/bash ./scripts/tag.sh"
   - gulp sw:rev
   - cat config-tags.toml
   - hugo --config="config-tags.toml" --verbose
