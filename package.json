@@ -33,6 +33,7 @@
     "gulp-string-replace": "^0.4.0",
     "gulp-uglify": "^2.1.0",
     "gulp-webp": "^2.3.0",
+    "require-dir": "^0.3.2",
     "run-sequence": "^1.2.2"
   }
 }
