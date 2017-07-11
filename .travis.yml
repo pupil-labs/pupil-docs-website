@@ -3,7 +3,8 @@ branches:
     - master
 os:
   - linux
-sudo: true
+dist: trusty
+sudo: required
 language: go
 go:
   - '1.8'
@@ -23,6 +24,8 @@ install:
   - npm install
   - bundle install  
   - go get -v github.com/spf13/hugo
+before_script:
+  - npm install -g gulp-cli
 script:
   - gulp deploy
   - "/bin/bash ./scripts/tag.sh"
