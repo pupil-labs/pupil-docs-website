@@ -19,6 +19,7 @@ before_install:
   - sudo apt-get install ruby-full
   - sudo apt-get install zlib1g-dev
   - gem install bundler
+  - npm install -g gulp
 install:
   - npm install
   - bundle install  
