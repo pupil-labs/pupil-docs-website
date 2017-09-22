@@ -133,7 +133,7 @@ gulp.task("js:build:all_nosearch", function(){
           .pipe(gulp.dest(SLATE_PATH+"javascripts"))
 });
 
-gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr', 'js:build:yt', 'js:build:sw'], function() {
+gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr', 'js:build:yt'], function() {
 
   return;
 });
