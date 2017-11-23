@@ -11,16 +11,15 @@ addons:
   apt:
     packages:
       - libcurl4-openssl-dev
+      - python-pygments
+      - graphicsmagick
+      - ruby-full
+      - zlib1g-dev
   ssh_known_hosts: "$DEPLOY_DOMAIN"
 before_install:
   - "/bin/bash ./scripts/before_install.sh"
   - git submodule foreach git pull origin master  
   - nvm install 6.0.0
-  - sudo apt-get -qq update
-  - sudo apt-get install python-pygments
-  - sudo apt-get install graphicsmagick
-  - sudo apt-get install ruby-full
-  - sudo apt-get install zlib1g-dev
   - gem install bundler
   - npm install -g gulp
 install:
