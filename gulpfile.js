@@ -21,10 +21,12 @@ const size = require('gulp-size')
 const imagemin = require('gulp-imagemin')
 const img_resize = require('gulp-image-resize')
 const webp = require('gulp-webp')
+const uncss = require('gulp-uncss')
+const browserSync = require('browser-sync')
+const reload = browserSync.reload
 const replace = require('gulp-string-replace');
 const git = require('git-rev-sync');
 const htmlmin = require('gulp-htmlmin');
-
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
 
@@ -64,6 +66,42 @@ gulp.task('css:build', ['css:build:screen', 'css:build:print'], function() {
   return;
 });
 
+
+// =================================================================
+// css preview tasks
+// =================================================================
+
+gulp.task("css:preview:screen", function() {
+  return gulp.src(SLATE_PATH+"stylesheets/screen.css.scss")
+          .pipe(sass({outputStyle: 'compressed'}).on('error',sass.logError))
+          .pipe(cleancss())
+          .pipe(prefixer({
+              browsers: ["last 2 versions"],
+              cascade: true, // prettify browser prefixes
+              remove: true // remove un-needed prefixes
+          }))
+          .pipe(concat('screen.min.css'))
+          .pipe(gulp.dest("public/slate/stylesheets"))
+});
+
+
+gulp.task("css:preview:print", function() {
+  return gulp.src(SLATE_PATH+"stylesheets/print.css.scss")
+          .pipe(sass({outputStyle: 'compressed'}).on('error',sass.logError))
+          .pipe(cleancss())
+          .pipe(prefixer({
+              browsers: ["last 2 versions"],
+              cascade: true, // prettify browser prefixes
+              remove: true // remove un-needed prefixes
+          }))
+          .pipe(concat('print.min.css'))
+          .pipe(gulp.dest("public/slate/stylesheets"))
+});
+
+
+gulp.task('css:build:preview', ['css:preview:screen', 'css:preview:print'], function() {
+  return;
+});
 
 // =================================================================
 // js build tasks
@@ -138,6 +176,60 @@ gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr', 
   return;
 });
 
+// =================================================================
+// js build tasks
+// =================================================================
+
+gulp.task("js:preview:all", function(){
+  return gulp.src([SLATE_PATH+"javascripts/lib/_energize.js",
+          SLATE_PATH+"javascripts/lib/_jquery.js",
+          SLATE_PATH+"javascripts/lib/_lunr.js",
+          SLATE_PATH+"javascripts/lib/_jquery.highlight.js",
+          SLATE_PATH+"javascripts/lib/_jquery_ui.js",
+          SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
+          SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
+          SLATE_PATH+"javascripts/lib/_lazysizes.js",
+          SLATE_PATH+"javascripts/lib/_plyr.js",
+          SLATE_PATH+"javascripts/app/_lang.js",
+          SLATE_PATH+"javascripts/app/_search.js",
+          SLATE_PATH+"javascripts/app/_toc.js",
+          SLATE_PATH+"javascripts/app/_plyrcontrols.js",
+          SLATE_PATH+"javascripts/app/_custom.js"])
+          .pipe(concat('all.min.js'))
+          .pipe(uglify())
+          .pipe(gulp.dest("public/slate/javascripts"))
+});
+
+gulp.task("js:preview:plyr", function(){
+  return gulp.src([
+          SLATE_PATH+"javascripts/lib/_plyr.js",
+          SLATE_PATH+"javascripts/app/_plyrcontrols.js",
+          ])
+          .pipe(concat('plyr.min.js'))
+          .pipe(uglify())
+          .pipe(gulp.dest("public/slate/javascripts"))
+});
+
+
+gulp.task("js:preview:all_nosearch", function(){
+  return gulp.src([SLATE_PATH+"javascripts/lib/_energize.js",
+          SLATE_PATH+"javascripts/lib/_jquery.js",
+          SLATE_PATH+"javascripts/lib/_jquery_ui.js",
+          SLATE_PATH+"javascripts/lib/_jquery.tocify.js",
+          SLATE_PATH+"javascripts/lib/_imagesloaded.min.js",
+          SLATE_PATH+"javascripts/lib/_lazysizes.js",
+          SLATE_PATH+"javascripts/app/_lang.js",
+          SLATE_PATH+"javascripts/app/_toc.js",
+          SLATE_PATH+"javascripts/app/_custom.js"])
+          .pipe(concat('all_nosearch.min.js'))
+          .pipe(uglify())
+          .pipe(gulp.dest("public/slate/jjavascripts"))
+});
+
+gulp.task('js:build:preview', ['js:preview:all','js:preview:all_nosearch', 'js:preview:plyr'], function() {
+  return;
+});
+
 
 // =================================================================
 // hugo tasks
@@ -153,6 +245,10 @@ gulp.task('hugo:serve', shell.task([
 
 gulp.task('hugo:build', shell.task([
   'hugo server -D'])
+);
+
+gulp.task('hugo:preview', shell.task([
+  'hugo'])
 );
 
 // =================================================================
@@ -232,6 +328,63 @@ gulp.task('webp:make:img', function() {
     .pipe(gulp.dest(imgOutput))
 });
 
+// =================================================================                      
+// experiments
+// =================================================================  
+
+gulp.task('css:clean', function() {
+  return gulp.src('public/slate/stylesheets/*.css')
+    .pipe(size())
+    .pipe(uncss({
+      debug: true,
+      html: ['public/*.html'],
+      report: true,
+      ignore: [
+          /.tocify-(w|h|i|f|s)\w+/,
+          /.plyr--f\w+-(?:a|e)\w+/,
+          /.plyr--(?:vid|st|re|pl|lo)\w+/,
+          /.plyr__pl\w+-\w+/,
+          /.plyr__co\w+/,
+          /.plyr/,
+          /.feature-v\w+.plyr--\w+/,
+          /.cont\w+\s[a]/,
+          /h\d\s.anchor*/, 
+          /h\d\s.github-\w*/,
+          /.toc-f\w*/,
+          /.search-\w*/,
+          /.img-\w+(.)lazy\w*/,
+          /.content\s.(?:search-|github-)\w*/
+        ]}))
+    .pipe(size())
+    .pipe(gulp.dest('public/slate/stylesheets/'))
+});
+
+
+// =================================================================                      
+// browser sync
+// =================================================================  
+
+// bs reload
+gulp.task('md:preview',['hugo:preview'], reload);
+gulp.task('css:preview',['css:build:preview'], reload);
+gulp.task('js:preview',['js:build:preview'], reload);
+
+
+gulp.task('preview', function(cb) {
+  return runSeq(['css:build','js:build'],
+                'hugo:preview',
+                'css:clean',
+                cb
+                );
+});
+
+gulp.task('watch', ['preview'], function() {
+  // preview with browserSync
+  browserSync.init({server: "public", port:3000})
+  gulp.watch(SLATE_PATH+"javascripts/**/*.js", ['js:preview'])
+  gulp.watch(SLATE_PATH+"stylesheets/*.{css,scss}", ['css:preview'])
+  gulp.watch("content/**/*.md", ['md:preview'])
+ 
 
 // =================================================================
 // Service worker task - append git hash for cache update
