@@ -59,6 +59,22 @@ Diagram of the submodule hierarchy.
 
 Deployment with TravisCI. See `.travis.yml` and `/scripts` directory. 
 
+## HTML Proofer
+
+[HTMLProofer](https://github.com/gjtorikian/html-proofer) - test rendered html files for errors
+
+Have a look in [Pupil Docs Wesite TravisCI](https://travis-ci.org/pupil-labs/pupil-docs-website) logs for errors
+
+### What's Tested?
+
+- Images - `img` elements
+- Links - `a`, `link` elements
+- Scripts - `script` elements
+- HTML - Whether the HTML markup is valid. This is done via [Nokogiri](http://www.nokogiri.org/tutorials/ensuring_well_formed_markup.html) to ensure well-formed markup.
+
+### Installation
+
+`bundle install`
 
 ## Notes
 
