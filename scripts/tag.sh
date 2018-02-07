@@ -109,12 +109,11 @@ main () {
     err "Error! Tag count is not a number"
   fi
   tags=$(git tag -l | sort -V | tail -n "${TAGNUM}")
-  echo -e "tags: ${tags}"
   tags+='\n'"${BRANCHES}"
   tags=$(echo -e "${tags}" | sed -e "/^\s*$/d")
-  echo -e "tags: ${tags}"
   latestTag=$(echo "${tags##*$'\n'}" | tr -d '.')
-  echo -e "latest tag = ${latestTag}"
+  echo -e "all tags: ${tags}"
+  echo -e "latest tag: ${latestTag}"
 
   tagsCount=$(echo $(wc -l <<< "${tags}"))
   body=$(cat "${SOURCE}")
