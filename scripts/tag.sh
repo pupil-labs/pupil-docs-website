@@ -115,7 +115,7 @@ main () {
 
   tagsCount=$(echo $(wc -l <<< "${tags}"))
   body=$(cat "${SOURCE}")
-  body+="\n\ndefaultContentLanguage = master\n\n[Languages]\n"
+  body+="\n\ndefaultContentLanguage = \"master\"\n\n[Languages]\n"
   for tag in ${tags}
     do 
       stripTag=$(echo "${tag}" | tr -d '.')
