@@ -108,10 +108,11 @@ main () {
   if ! [[ ${TAGNUM} -eq ${TAGNUM} ]] ; then 
     err "Error! Tag count is not a number"
   fi
-  branch_names=tags
-  versions=$(git tag -l | sort -V | tail -n "${TAGNUM}")
-  tags=versions+branch_names
+  tags=$(git tag -l | sort -V | tail -n "${TAGNUM}")
+  echo -e "tags: ${tags}"
+  tags+='\n'"${BRANCHES}"
   tags=$(echo -e "${tags}" | sed -e "/^\s*$/d")
+  echo -e "tags: ${tags}"
   latestTag=$(echo "${tags##*$'\n'}" | tr -d '.')
   echo -e "latest tag = ${latestTag}"
 
