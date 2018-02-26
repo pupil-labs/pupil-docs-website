@@ -24,7 +24,7 @@ before_install:
   - npm install -g gulp
 install:
   - npm install
-  - bundle install  
+  - bundle install --full-index
   - go get -v github.com/spf13/hugo
 script:
   - gulp deploy
