@@ -15,7 +15,6 @@ const runSeq = require('run-sequence');
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const minify = require('gulp-minify');
-const shell = require('gulp-shell');
 const rename = require('gulp-rename')
 const size = require('gulp-size')
 const imagemin = require('gulp-imagemin')
@@ -24,6 +23,7 @@ const webp = require('gulp-webp')
 const replace = require('gulp-string-replace');
 const git = require('git-rev-sync');
 const htmlmin = require('gulp-htmlmin');
+const exec = require('child_process').exec;
 
 
 var SLATE_PATH = "./themes/docuapi/static/slate/";
@@ -143,17 +143,19 @@ gulp.task('js:build', ['js:build:all','js:build:all_nosearch', 'js:build:plyr', 
 // hugo tasks
 // =================================================================
 
-gulp.task('hugo:disk', shell.task([
-  'hugo server --renderToDisk'])
-);
+gulp.task('hugo:disk', function(cb) {
+  exec('hugo server --renderToDisk', function(err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
+})
 
-gulp.task('hugo:serve', shell.task([
-  'hugo server -D'])
-);
-
-gulp.task('hugo:build', shell.task([
-  'hugo server -D'])
-);
+gulp.task('hugo:serve', function(cb) {
+  exec('hugo server --config="config.toml" --verbose', function(err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
+})
 
 // =================================================================
 // dev tasks
