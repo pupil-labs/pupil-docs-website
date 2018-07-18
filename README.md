@@ -31,6 +31,8 @@ Build and serve using gulp tasks. This will call `hugo server` as a child proces
 gulp
 ```
 
+By default this will serve on `localhost:1313`
+
 ## Project structure
 
 This project depends on 3 submodules:
