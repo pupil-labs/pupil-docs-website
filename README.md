@@ -10,31 +10,26 @@ Pupil docs static site generator.
   - Windows: see hugo installation guide [here](https://gohugo.io/overview/installing/)
 - `Pygments`
   - `pip install pygments` or `pip3 install pygments`
+- `Node` and `npm`
 
 Clone the repo and submodules:
 
 `git clone --recursive https://github.com/pupil-labs/pupil-docs-website.git`
 
+### Install node dependencies
+
+```bash
+cd pupil-docs-website
+npm install
+```
+
 ## Preview
 
-Build and serve only published content
+Build and serve using gulp tasks.
 
 ```bash
-hugo server
+gulp
 ```
-
-Build and serve published content and drafts
-
-```bash
-hugo server -D
-```
-
-Serve on custom port
-```
-hugo server -p 3030
-```
-
-See server options in hugo docs [here](https://gohugo.io/commands/hugo_server/).
 
 ## Project structure
 
