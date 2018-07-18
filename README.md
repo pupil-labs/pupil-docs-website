@@ -6,7 +6,7 @@ Pupil docs static site generator.
 
 - `hugo` - static site generator written in `Go`
   - macOS: `brew install hugo`
-  - Linux: `snap install hugo`
+  - Linux: `sudo apt install hugo` or `snap install hugo`
   - Windows: see hugo installation guide [here](https://gohugo.io/overview/installing/)
 - `Pygments`
   - `pip install pygments` or `pip3 install pygments`
@@ -25,7 +25,7 @@ npm install
 
 ## Preview
 
-Build and serve using gulp tasks.
+Build and serve using gulp tasks. This will call `hugo server` as a child process after building all js and css.
 
 ```bash
 gulp
