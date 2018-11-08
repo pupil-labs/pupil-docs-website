@@ -25,7 +25,7 @@ before_install:
 install:
   - npm install
   - bundle install
-  - go get -v github.com/spf13/hugo
+  - go get -v github.com/gohugoio/hugo
 script:
   - gulp deploy
   - gulp img:make
