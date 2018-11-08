@@ -6,7 +6,7 @@ os:
 sudo: true
 language: go
 go:
-  - '1.8'
+  - '1.11'
 addons:
   apt:
     packages:
