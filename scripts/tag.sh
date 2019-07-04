@@ -12,7 +12,7 @@
 ################################################################################
 variables_func() {
   BRANCHES="master"
-  EXCLUDE="logo.png|navbar.png|\.ico"
+  EXCLUDE="logo.png|navbar.png|\.ico|pl_logo.svg"
   OUTFILE="config-tags.toml"
   PATTERN=".md|.jpg|.jpeg|.pdf|.svg|.gif|.mp4|.webm|.webp"
   SOURCE="config.toml"
