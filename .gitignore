@@ -23,7 +23,7 @@ _testmain.go
 *.test
 *.prof
 node_modules
-src/.vuepress/dist
+src/.vuepress/dist/
 
 # ignore our minified css files
 screen.min.css
