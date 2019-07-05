@@ -1,6 +1,8 @@
 # pupil-docs-website
 
-Pupil docs static site generator. 
+Pupil docs static site generator.
+
+(This is an experimental feature branch please do not try to pull or edit!)
 
 ## Dependencies & Setup
 
@@ -37,9 +39,9 @@ By default this will serve on `localhost:1313`
 
 This project depends on 3 submodules:
 
-  - [content](https://github.com/pupil-labs/pupil-docs) - contains all text and images used in documentation. It is versioned independently from the site generator and all styles. Versions of content are synchronized with versions of [Pupil](https://github.com/pupil-labs/pupil). 
-  - [docuapi](https://github.com/pupil-labs/docuapi) - a Hugo theme for slate with some nice custom tools. We forked the repo in order to make change to layouts and styles. 
-  	- [slate](https://github.com/pupil-labs/slate) - a fork of Slate with only `js`, styles, and fonts stored for development. Javascript is minified and bundled with `docuapi`'s custom GO bundler or with `gulp` task.  
+  - [content](https://github.com/pupil-labs/pupil-docs) - contains all text and images used in documentation. It is versioned independently from the site generator and all styles. Versions of content are synchronized with versions of [Pupil](https://github.com/pupil-labs/pupil).
+  - [docuapi](https://github.com/pupil-labs/docuapi) - a Hugo theme for slate with some nice custom tools. We forked the repo in order to make change to layouts and styles.
+  	- [slate](https://github.com/pupil-labs/slate) - a fork of Slate with only `js`, styles, and fonts stored for development. Javascript is minified and bundled with `docuapi`'s custom GO bundler or with `gulp` task.
 
 Diagram of the submodule hierarchy.
 
@@ -54,7 +56,7 @@ Diagram of the submodule hierarchy.
 
 ## Deployment
 
-Deployment with TravisCI. See `.travis.yml` and `/scripts` directory. 
+Deployment with TravisCI. See `.travis.yml` and `/scripts` directory.
 
 ## HTML Proofer
 
