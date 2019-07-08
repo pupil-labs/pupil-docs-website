@@ -1,4 +1,4 @@
-
+const VuetifyLoaderPlugin = require("vuetify-loader/lib/plugin");
 module.exports = {
   title: "Pupil Labs",
   description: "Pupil Labs - We build state of the art eye tracking hardware and software. \
@@ -8,16 +8,11 @@ module.exports = {
     lastUpdated: "Last Updated",
     sidebar:{
       '/invisible/':[
-        {
-          title: 'Introduction',
-          children: [
-            '',
-          ]
-        },
+        '',
         {
           title: 'Getting Started',
           children: [
-            ['getting-started/','test'],
+            ['getting-started/', 'Overview'],
             'getting-started/capture-walkthrough',
             'getting-started/capture-workflow',
             'getting-started/player-walkthrough',
@@ -27,7 +22,7 @@ module.exports = {
         {
           title: 'Hardware',
           children: [
-            'pupil-hardware/',
+            ['pupil-hardware/', 'Overview'],
             'pupil-hardware/hardware-dev',
             'pupil-hardware/hololens-add-on',
             'pupil-hardware/htc-vive-add-on',
@@ -38,23 +33,23 @@ module.exports = {
         },
         {
           title: 'License',
-          collapsable: true,
           children: [
-            '',
+            ['license/', 'Overview'],
           ]
         },
       ],
       '/core/':[
-        {
-          title: 'Introduction',
-          children: [
-            '',
-          ]
-        },
+        '',
       ],
-      '/vr-ar/':[],
-      '/cloud/':[],
-      '/developer/':[],
+      '/vr-ar/':[
+        '',
+      ],
+      '/cloud/':[
+        '',
+      ],
+      '/developer/':[
+        '',
+      ],
     },
     sidebarDepth: 3,
     displayAllHeaders: true,
@@ -70,8 +65,37 @@ module.exports = {
   },
 
   plugins: [
+    [
+      "@vuepress/last-updated",
+      {
+        transformer: (timestamp, lang) => {
+          var date = new Date(timestamp);
+          var yy = date.getFullYear();
+          var mm = ("0" + (date.getMonth() + 1)).slice(-2);
+          var dd = ("0" + date.getDate()).slice(-2);
+          return `${yy}-${mm}-${dd}`;
+        }
+      }
+    ],
 
+    [
+      "@vuepress/google-analytics",
+      {
+        ga: "UA-40856943-2"
+      }
+    ]
   ],
+  chainWebpack: config => {
+    config.module
+      .rule("pug")
+      .test(/\.pug$/)
+      .use("pug-plain-loader")
+      .loader("pug-plain-loader")
+      .end();
+  },
+  configureWebpack: {
+    plugins: [new VuetifyLoaderPlugin()]
+  },
 
 
 }

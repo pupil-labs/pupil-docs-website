@@ -5,7 +5,7 @@ section_weight = 0
 page_weight = 0
 ---
 
-# Introduction Core
+# Introduction Developer
 
 Welcome to Pupil - the open source head mounted mobile eye tracking platform.
 

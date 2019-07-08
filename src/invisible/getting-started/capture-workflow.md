@@ -5,22 +5,20 @@ section_weight = 1
 page_weight = 1
 ---
 
-## Capture Workflow
-
-
+# Capture Workflow
 Go through the following steps to get familiar with the Pupil workflow. You can also check out [video tutorials](#pupil-capture-demo-video) at the end of the guide.
 
 
-### 1. Put on Pupil
+## 1. Put on Pupil
 Put on the Pupil headset and plug it in to your computer. Make sure there is space between the headset frame and your forehead. Headsets are adjustable and shipped with additional parts. For more information head over to the [Pupil Hardware](#pupil-hardware) guide.
 
-### 2. Start Pupil Capture
+## 2. Start Pupil Capture
 
-<img src="/images/icons/svg/pc.svg" class="feature-center logo" width="20%" alt="Pupil Capture logo" >
+<img src="../../images/icons/svg/pc.svg" class="feature-center logo" width="20%" alt="Pupil Capture logo" >
 
-### 3. Check pupil detection
+## 3. Check pupil detection
 
-<iframe src="/videos/calibration/pupil-detection/pd.webm" ></iframe>
+<video src="../../videos/calibration/pupil-detection/pd.webm"  controls></video>
 
 Take a look at the `Eye` window. If the pupil is detected you will see a red circle around the edge of your pupil and a red dot at the center of your pupil.
 
@@ -28,11 +26,11 @@ If the algorithm's detection confidence is high, the red circle will be opaque. 
 
 Try moving your head around a bit while looking at your eye to see that the pupil is robustly detected in various orientations.
 
-#### Good and bad eye video
+### Good and bad eye video
 
 Before calibrating, be sure to check that your eyes are well positioned for a robust eye tracking performance. For more details check out. - [Pupil Headset Adjustments](https://docs.pupil-labs.com/#pupil-headset-adjustments)
 
-<img src="/images/pupil-capture/eye/good_bad_eye.webp" alt="Good bad eye setup" >
+<img src="../../images/pupil-capture/eye/good_bad_eye.jpg" alt="Good bad eye setup" >
 
 <aside class="success" style="clear:none;">
 	1. Do - The eye is in focus and all range of the eye movements are visible. (Focus is only important for 120hz eye camera. 200hz camera has fixed focus.)
@@ -50,7 +48,7 @@ Before calibrating, be sure to check that your eyes are well positioned for a ro
 	4. Don't - The eye is out of focus.
 </aside>
 
-### 4. Calibrate
+## 4. Calibrate
 
 <iframe src="/videos/calibration/calibration-headset/clb-hd.webm" ></iframe>
 
@@ -58,7 +56,7 @@ In order to know what someone is looking at, we must to establish a mapping betw
 
 The calibration process establishes a mapping from pupil to gaze coordinates.
 
-#### Screen Marker Calibration Method
+### Screen Marker Calibration Method
 
 <iframe src="/videos/calibration/calibration-screen/clb-s.webm" ></iframe>
 
@@ -70,7 +68,7 @@ Follow the marker on the screen with your eyes and try to keep your head station
 
 There are other calibration methods and lots more information how calibration works in the [user guide](#calibration "calibration").
 
-### 5. Record
+## 5. Record
 
 <iframe src="/videos/recording/rec.webm" ></iframe>
 

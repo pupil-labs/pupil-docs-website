@@ -5,7 +5,7 @@ section_weight = 1
 page_weight = 4
 ---
 
-## Pupil Player Demo Video
+# Pupil Player Demo Video
 
 <iframe src="https://www.youtube.com/embed/7vQuL29P9ow" ></iframe>
 

@@ -4,7 +4,7 @@ section_weight = 2
 page_weight = 4
 ---
 
-## HoloLens Add-On
+# HoloLens Add-On
 
 <img src="/images/vr-ar/hololens_e200.webp" alt="HoloLens add-on" >
 

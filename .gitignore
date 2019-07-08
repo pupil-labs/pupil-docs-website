@@ -25,6 +25,8 @@ _testmain.go
 node_modules
 src/.vuepress/dist/
 src/.vuepress/public/
+src/images/
+src/videos
 
 # ignore our minified css files
 screen.min.css

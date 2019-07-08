@@ -5,7 +5,7 @@ section_weight = 1
 page_weight = 3
 ---
 
-## Pupil Capture Demo Video
+# Capture Walktrough
 
 <iframe src="https://www.youtube.com/embed/Fxll-vPFa90" ></iframe>
 
