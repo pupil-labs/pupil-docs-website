@@ -1,5 +1,9 @@
 # pupil-docs-website
 
+**Warning**: Depreciated on 2019-09-30. Now all docs and site generator are in [pupil-docs](https://github.com/pupil-labs/pupil-docs "pupil-docs repo").
+
+---
+
 Pupil docs static site generator. 
 
 ## Dependencies & Setup
