@@ -1,4 +1,4 @@
-rewrite ^/cloud/enrichments/#raw-data-exporter\/?$ /invisible/reference/export-formats.html#raw-data-exporter;
+        rewrite ^/cloud/enrichments/#raw-data-exporter\/?$ /invisible/reference/export-formats.html#raw-data-exporter;
         rewrite ^/cloud/enrichments/#marker-mapper\/?$ /invisible/reference/export-formats.html#marker-mapper;
         rewrite ^/cloud/enrichments/#reference-image-mapper\/?$ /invisible/reference/export-formats.html#reference-image-mapper;
         rewrite ^/cloud/enrichments/#face-mapper\/?$ /invisible/reference/export-formats.html#face-mapper;
