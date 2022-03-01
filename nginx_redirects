@@ -1,1 +1,2 @@
         rewrite ^/cloud/enrichments\/?$ /invisible/reference/export-formats.html;
+        rewrite ^/cloud\/?$ /invisible/;
